@@ -140,3 +140,15 @@ const respuestaEvery = arreglo
         }
     );
 console.log('respuestaEvery', respuestaEvery);
+
+// Reduce            Izquierda->Derecha
+// Reduce Right      Derecha->Izquierda
+const respuestaReduce = arreglo
+    .reduce(
+        function (valorAcumulado, valorActual, indice, arreglo) {
+            return (valorAcumulado - valorActual.nota);  //Calculo
+        },
+        100 // Acumulador (Otro parámetro de la función reduce)
+    );
+console.log('respuestaReduce', respuestaReduce); //100 - x = -46
+
