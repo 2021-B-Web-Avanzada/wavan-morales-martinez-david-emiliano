@@ -23,3 +23,4 @@ const superArreglo = [
     ...arregloUno,
 ];
 console.log('superArreglo', superArreglo);
+
