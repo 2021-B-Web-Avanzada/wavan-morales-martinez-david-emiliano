@@ -5,7 +5,7 @@ const fs = require('fs');
 Hacer una función que me acepte como parámetro una varible
 con el path del archivo y el contenido a agregar al contenido del archivo.
 La función debe tomar estos dos parámetros y leer el archivo y añadir
-el texto al fnal del archivo. Al final vamos a leer el archivo nuevamente e imprimirlo
+el texto al final del archivo. Al final vamos a leer el archivo nuevamente e imprimirlo
 en consola.
 TODO DEBE SER REALIZADO CON PROMESAS
 - Promesa de lectura
