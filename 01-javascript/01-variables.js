@@ -1,4 +1,3 @@
-/*
 // Mutables e Inmutables
 // Mutables
 var numeroUno = 1;
@@ -137,7 +136,7 @@ console.log(miguel);
 delete bruno.nombre;
 console.log(bruno);
 console.log(miguel);
-*/
+
 
 // Para clonar un objeto
 let bruno = {
