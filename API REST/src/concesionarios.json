@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "nombre": "Mazda",
+        "direccion": "Av. 10 de Agosto N40-94 y Av. Gaspar de Villarroel",
+        "telefono": "2445392",
+        "abierto": true,
+        "web": "https://www.mazda.com.ec/"
+    },
+    {
+        "id": 2,
+        "nombre": "Nissan",
+        "direccion": "Av. Francisco de Orellana E2-30",
+        "telefono": "0958972022",
+        "abierto": true,
+        "web": "https://www.nissan.com.ec/"
+    },
+    {
+        "id": 3,
+        "nombre": "Maserati",
+        "direccion": "Av. de los Shyris N32-58",
+        "telefono": "6055979",
+        "abierto": false,
+        "web": "https://maseratiecuador.com/"
+    }
+]

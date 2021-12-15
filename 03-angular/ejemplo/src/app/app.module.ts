@@ -10,10 +10,13 @@ import { RutaInicioComponent } from './rutas/ruta-inicio/ruta-inicio.component';
 import { RutaUsuarioComponent } from './rutas/ruta-usuario/ruta-usuario.component';
 import { RutaPostComponent } from './rutas/ruta-post/ruta-post.component';
 import { RutaAppComponent } from './rutas/ruta-app/ruta-app.component';
+import { AuthService } from './servicios/auth/auth.service';
+import { EstaLogeadoGuard } from './servicios/auth/esta-logeado.guard';
 
 
 @NgModule({
   declarations: [
+    // Componentes
     AppComponent,
     RutaLoginComponent,
     RutaForbiddenComponent,
@@ -24,10 +27,17 @@ import { RutaAppComponent } from './rutas/ruta-app/ruta-app.component';
     RutaAppComponent
   ],
   imports: [
+    // Módulos
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    //Servicios
+    AuthService,
+    EstaLogeadoGuard
+  ],
+  bootstrap: [
+    // Componente principal
+    AppComponent]
 })
 export class AppModule { }
