@@ -7,6 +7,7 @@ import { RutaLoginComponent } from './rutas/ruta-login/ruta-login.component';
 import { RutaNotFoundComponent } from './rutas/ruta-not-found/ruta-not-found.component';
 import { RutaPostComponent } from './rutas/ruta-post/ruta-post.component';
 import { RutaUsuarioComponent } from './rutas/ruta-usuario/ruta-usuario.component';
+import { EsAdministradorGuard } from './servicios/auth/es-administrador.guard';
 import { EstaLogeadoGuard } from './servicios/auth/esta-logeado.guard';
 
 
@@ -14,6 +15,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: RutaLoginComponent,
+  },
+  { // Lazy-Route
+    path: 'lazy-inventario',
+    // Una vez importemos los módulos, se redirigirá a la ruta establecida
+    loadChildren: () => import('./modulos/modulo-inventario/modulo-inventario.module')
+      .then(m => m.ModuloInventarioModule)
   },
   {
     path: 'forbidden',
@@ -39,6 +46,8 @@ const routes: Routes = [
       {
         path: 'post',
         component: RutaPostComponent,
+        // Unicamente se podrá activar si existe un admin
+        canActivate: [EsAdministradorGuard]
       }
     ]
   },
