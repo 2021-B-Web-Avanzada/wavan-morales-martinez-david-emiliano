@@ -2,19 +2,44 @@
 const{Router, request} = require('express');
 const router = Router();
 const path = require('path');
-const jsPath = path.join(_dirname, '..', '..', '..', 'deber-01', 'concesionarios.js');
-const data = require('jsPath');
+const jsPath = path.join(_dirname, '..', '..', '..', 'deber-01', 'deber-01.js');
+const data = require(jsPath);
 
 // GET
 
 // Consulta Concesionarios
 router.get('/', (req, res) =>{
-    res.json(data);
+    res.json(
+        {
+            "Title": "API de los concesionarios y sus autos"
+        }
+    );
 });
 
 // Concesionarios
 router.get('/concesionario', (req, res) => {
-    res.json(dataModule.obtenerConcesionarios());
+    res.json(data.obtenerConcesionarios());
+})
+
+// Concesionario Específico (Nombre)
+router.get('/concesionario/:nombreConcesionario', (req, res) => {
+    try {
+        if (req.query.concesionario !== "") {
+            let nombreConcesionario = req.params.nombreConcesionario;
+            let concesionarioEncontrato = data.buscarConcesionario(nombreConcesionario);
+            res.json(concesionarioEncontrato);
+        } else {
+            res.json(
+                {
+                    "error": "Concesionario no encontrado"
+                }
+            );
+            res.sendStatus('400')
+        }
+    } catch (e) {
+        res.sendStatus('400')
+    }
+
 })
 
 // POST
@@ -27,7 +52,7 @@ router.post('/concesionario', (req, res) =>{
         let telefono = req.body.telefono;
         let abierto = req.body.abierto;
         let web = req.body.web;
-        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined) {
+        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && nuevo !== undefined && web !== undefined) {
             let concesionario = {
                 nombreConcesionario: nombreConcesionario,
                 direccion: direccion,
@@ -38,13 +63,13 @@ router.post('/concesionario', (req, res) =>{
             };
             console.log(concesionario);
 
-            dataModule.guardarConcesionario(concesionario);
+            data.guardarConcesionario(concesionario);
             res.json({
                 "message": "Concesionario creado con exito"
             });
         } else {
             res.json({
-                "error": "Error al crear el concesionario"
+                "error": "Error al crear el Concesionario"
             });
         }
     } catch (e) {
@@ -59,35 +84,34 @@ router.post('/concesionario', (req, res) =>{
 // Crear Autos
 router.post('/autos', (req, res) => {
     try {
-
-        let marca = req.body.marca;
+        let modelo = req.body.modelo;
         let año = req.body.año;
-        let abierto = req.body.abierto;
+        let nuevo = req.body.nuevo;
         let color = req.body.color;
         let precio = req.body.precio;
 
-        if (marca !== undefined && año !== undefined && abierto !== undefined && color !== undefined && precio !== undefined ) {
+        if (modelo !== undefined && año !== undefined && nuevo !== undefined && color !== undefined && precio !== undefined ) {
             let auto = {
-                marca: marca,
+                modelo: modelo,
                 año: año,
-                abierto: abierto,
+                nuevo: nuevo,
                 color: color,
                 precio: precio,
 
             };
-            dataModule.saveBook(nombre, auto);
+            data.saveBook(nombre, auto);
             res.json({
                 "message": "Auto creado con exito"
             });
         } else {
             res.json({
-                "error": "Error al crear el auto"
+                "error": "Error al crear el Auto"
             });
         }
     } catch (e) {
         res.json(
             {
-                "error": "Error al buscar concesionario"
+                "error": "Error al buscar Concesionario"
             }
         );
     }
@@ -96,33 +120,91 @@ router.post('/autos', (req, res) => {
 
 
 // Actualizar Concesionarios
-router.put('/:ideParent&:idChildren', (req, res) => {
-    console.log(req.params);
+router.put('/concesionario/:nombreConcesionario', (req, res) => {
+    try {
+        let nombreConcesionario = req.body.nombreConcesionario;
+        let direccion = req.body.direccion;
+        let telefono = req.body.telefono;
+        let abierto = req.body.abierto;
+        let web = req.body.web;
+        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined) {
+            let nuevoConcesionario = {
+                direccion: direccion,
+                telefono: telefono,
+                abierto: abierto,
+                web: web
+            };
+        let concesionario = data.buscarConcesionario(nombreConcesionario);
+        const concesionarioCompleto = {
+                ...concesionario,
+                ...nuevoConcesionario
+         }
+        data.updateConcesionario(autorCompleto);
+        res.json(
+            {
+                "message": "Concesionario actualizado con éxito"
+            }
+        );
+    } else {
+        res.json(
+            {
+                "error": "Error al actualizar Concesionario"
+            }
+        );
+    }
+} catch (e) {
     res.json(
         {
-            "error": "Error al buscar concesionario"
+            "error": "Error al actualizar el Concesionario"
         }
     );
+}
 })
 
-router.put('/:id',(req, res) =>{
-    const{id} = req.params;
-    const {nombre, direccion, telefono, abierto, web} = req.body;
-    if (nombre&&direccion&&telefono&&abierto&&web) {
-        _.each(data, (concesionario, i)=>{
-            if (concesionario.id == id){
-                concesionario.nombre = nombre;
-                concesionario.direccion = direccion;
-                concesionario.telefono = telefono;
-                concesionario.abierto = abierto;
-                concesionario.web = web;
+// Actualizar Autos
+router.put('/autos/:nombreConcesionario&:modelo', (req, res) => {
+    try {
+        let modelo = req.body.modelo;
+        let año = req.body.año;
+        let nuevo = req.body.nuevo;
+        let color = req.body.color;
+        let precio = req.body.precio;
+        if (modelo !== undefined && año !== undefined && nuevo !== undefined && color !== undefined && precio !== undefined) {
+            let nuevoAuto = {
+                año = año,
+                nuevo = nuevo,
+                color = color,
+                precio = precio
+            };
+//------METODO A IMPLEMENTAR            
+            const auto = buscarAutoConcesionario();
+            const autoCompleto = {
+                ...auto,
+                ...nuevoAuto
             }
-        });
-        res.json(data);
-    } else {
-        res.status(500).json({ "error": " Error en la actualización de concesionarios"});
+            updateAuto(concesionario, autoCompleto);
+            
+            res.json(
+                {
+                    "message": "Auto actualizado con éxito"
+                }
+            );
+    } else{
+        res.json(
+            {
+                "error": "Error al actualizar el Auto"
+            }
+        );
     }
-} )
+} catch (e){
+    res.json(
+        {
+            "error": "Error al actualizar el Auto"
+        }
+    );
+}
+
+})
 
 // Borrar Concesionarios
 router.delete('/concesionario/:nombreConcesionario', (req, res) => {
@@ -130,7 +212,7 @@ router.delete('/concesionario/:nombreConcesionario', (req, res) => {
     const autorName = req.params.nombreConcesionario;
 
     try {
-        dataModule.borrarConcesionario(nombreConcesionario);
+        data.borrarConcesionario(nombreConcesionario);
         res.json(
             {
                 "response": "Concesionario Borrado"
@@ -145,22 +227,22 @@ router.delete('/concesionario/:nombreConcesionario', (req, res) => {
     }
 })
 
-router.delete('/autos/:nombreConcesionario&:marca', (req, res) => {
+router.delete('/autos/:nombreConcesionario&:modelo', (req, res) => {
     console.log(req.params);
     const nombreConcesionario = req.params.nombreConcesionario;
-    const marca = req.params.marca;
+    const modelo = req.params.modelo;
 
     try {
-        dataModule.borrarConcesionario(nombreConcesionario, marca);
+        data.borrarConcesionario(nombreConcesionario, modelo);
         res.json(
             {
-                "response": "Concesionario Borrado"
+                "response": "Auto Borrado"
             }
         );
     } catch (e) {
         res.json(
             {
-                "error": "Error al eliminar concesionario"
+                "error": "Error al eliminar auto"
             }
         );
     }

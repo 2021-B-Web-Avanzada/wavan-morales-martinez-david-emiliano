@@ -4,19 +4,6 @@ const fs = require('fs');  // Importando File System
 const { addAbortSignal } = require('stream');
 var path  = './concesionarios.json';
 
-// Exportamos las funciones 
-module.exports = {
-    buscarConcesionario,
-    obtenerConcesionarios,
-    obtenerAutos,
-    guardarConcesionario,
-    guardarAuto,
-    borrarConcesionario,
-    borrarAuto,
-    updateAuto,
-    updateConcesionario
-}
-
 
 // Menu de Inicio
 async function inquirerMenu() {
@@ -279,7 +266,7 @@ function guardarConcesionario(concesionario) {
 }
 
 // Crear Auto
-async function guardarAuto() {
+async function createAuto() {
     let concesionario = await seleccionarConcesionario
 ();
     let auto = await inquirerAuto();
@@ -402,7 +389,7 @@ async function crearConcesionario(path) {
 }
 
 function crearAuto(path) {
-    guardarAuto();
+    createAuto();
 }
 
 function mostrarConcesionario(path) {

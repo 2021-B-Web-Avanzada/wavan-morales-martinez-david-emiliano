@@ -1,1 +1,19 @@
 <h2>Hola desde Banner</h2>
+
+<!--- Interpolación {{}} -> TEXTO MUESTRA INTERFAZ --->
+<h3>{{nombre}} - {{apellido}}</h3>
+<p>Mascota: {{mascotas.teo.edad}}</p>
+
+<!-- Property Binding [] -->
+<img [src]="urlImagen" alt="">
+<a [href]="url" target="_blank"> Más Información
+</a>
+
+<!-- Event Binding -->
+<button (click)="ejecutarEventoClick()"
+        (blur)="ejecutarEventoBlur()">Event Binding</button>
+
+<!-- PIPES -->
+<p> {{fecha | date: 'dd-MM-YYYY'}}</p>
+<p> {{sueldo | currency}}</p>
+<pre> {{mascotas | json}}</pre>
