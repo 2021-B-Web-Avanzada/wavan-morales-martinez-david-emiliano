@@ -266,7 +266,7 @@ function guardarConcesionario(concesionario) {
 }
 
 // Crear Auto
-async function guardarAuto() {
+async function createAuto() {
     let concesionario = await seleccionarConcesionario
 ();
     let auto = await inquirerAuto();
@@ -389,7 +389,7 @@ async function crearConcesionario(path) {
 }
 
 function crearAuto(path) {
-    guardarAuto();
+    createAuto();
 }
 
 function mostrarConcesionario(path) {
