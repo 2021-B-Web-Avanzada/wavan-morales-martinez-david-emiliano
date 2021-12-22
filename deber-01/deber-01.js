@@ -4,6 +4,19 @@ const fs = require('fs');  // Importando File System
 const { addAbortSignal } = require('stream');
 var path  = './concesionarios.json';
 
+// Exportamos las funciones 
+module.exports = {
+    buscarConcesionario,
+    obtenerConcesionarios,
+    obtenerAutos,
+    guardarConcesionario,
+    guardarAuto,
+    borrarConcesionario,
+    borrarAuto,
+    updateAuto,
+    updateConcesionario
+}
+
 
 // Menu de Inicio
 async function inquirerMenu() {

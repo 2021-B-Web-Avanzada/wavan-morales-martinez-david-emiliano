@@ -139,8 +139,7 @@ router.put('/concesionario/:nombreConcesionario', (req, res) => {
                 ...concesionario,
                 ...nuevoConcesionario
          }
-//------METODO A IMPLEMENTAR
-        data.guardarConcesionarioActualizado(autorCompleto);
+        data.updateConcesionario(autorCompleto);
         res.json(
             {
                 "message": "Concesionario actualizado con éxito"
@@ -183,8 +182,7 @@ router.put('/autos/:nombreConcesionario&:modelo', (req, res) => {
                 ...auto,
                 ...nuevoAuto
             }
-//------METODO A IMPLEMENTAR
-            guardarAutoActualizado(concesionario, autoCompleto);
+            updateAuto(concesionario, autoCompleto);
             
             res.json(
                 {
@@ -207,7 +205,6 @@ router.put('/autos/:nombreConcesionario&:modelo', (req, res) => {
 }
 
 })
-
 
 // Borrar Concesionarios
 router.delete('/concesionario/:nombreConcesionario', (req, res) => {
