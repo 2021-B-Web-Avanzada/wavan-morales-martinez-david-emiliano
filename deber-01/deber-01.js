@@ -1,20 +1,24 @@
 // Importaciones 
 const inquirer = require('inquirer'); // Importando el Inquirer
 const fs = require('fs');  // Importando File System
-const { addAbortSignal } = require('stream');
-var path  = './concesionarios.json';
+//const { addAbortSignal } = require('stream');
+const path = require('path');
+var filename = './concesionarios.json';
+const jsonPath = path.join(__dirname, filename);
+
 
 // Exportamos las funciones 
 module.exports = {
     buscarConcesionario,
+    buscarAutoConcesionario,
     obtenerConcesionarios,
-    obtenerAutos,
     guardarConcesionario,
-    guardarAuto,
-    borrarConcesionario,
-    borrarAuto,
-    updateAuto,
-    updateConcesionario
+    updateConcesionarioAPI,
+    borrarConcesionarios,
+    obtenerAutos,
+    guardarAutoAPI,
+    updateAutoAPI,
+    borrarAutosAPI
 }
 
 
@@ -40,28 +44,28 @@ async function inquirerMenu() {
 async function seleccionarOpcion(seleccion) {
     try {
         if (seleccion === 'Crear Concesionario') {
-            crearConcesionario(path)
+            crearConcesionario(jsonPath)
         }
         if (seleccion === 'Crear Auto') {
-            crearAuto(path)
+            crearAuto(jsonPath)
         }
         if (seleccion === 'Mostrar Concesionarios') {
-            mostrarConcesionario(path)
+            mostrarConcesionario(jsonPath)
         }
         if (seleccion === 'Mostrar Autos') {
-            mostrarAuto(path)
+            mostrarAuto(jsonPath)
         }
         if (seleccion === 'Actualizar Concesionario') {
-            actualizarConcesionario(path)
+            actualizarConcesionario(jsonPath)
         }
         if (seleccion === 'Actualizar Auto') {
-            actualizarAuto(path)
+            actualizarAuto(jsonPath)
         }
         if (seleccion === 'Borrar Concesionario') {
-            borrarConcesionario(path)
+            borrarConcesionario(jsonPath)
         }
         if (seleccion === 'Borrar Auto') {
-            borrarAuto(path)
+            borrarAuto(jsonPath)
         }
     } catch (e) {
         console.error(e);
@@ -143,7 +147,7 @@ async function inquirerAuto(concesionario) {
 }
 
 // Inquirer Actualizar Concesionario
-async function inquirerActualizarConcesionario(concesionario){
+async function inquirerActualizarConcesionario(concesionario) {
     try {
         const nuevoConcesionario = await inquirer
             .prompt([
@@ -169,16 +173,16 @@ async function inquirerActualizarConcesionario(concesionario){
                 },
             ]);
 
-            const concesionarioCompleto = {
-                ...concesionario,
-                ...nuevoConcesionario
-            }
-            
-            let concesionarios = obtenerConcesionarios();
-            const indice = concesionarios.findIndex(patio => patio['nombreConcesionario'] === concesionarioCompleto.nombreConcesionario);
-            concesionarios[indice] = concesionarioCompleto;
-            escribirArchivo(concesionarios);
-            console.log('Concesionario Actualizado')
+        const concesionarioCompleto = {
+            ...concesionario,
+            ...nuevoConcesionario
+        }
+
+        let concesionarios = obtenerConcesionarios();
+        const indice = concesionarios.findIndex(patio => patio['nombreConcesionario'] === concesionarioCompleto.nombreConcesionario);
+        concesionarios[indice] = concesionarioCompleto;
+        escribirArchivo(concesionarios);
+        console.log('Concesionario Actualizado')
     } catch (e) {
         console.error(e);
     }
@@ -210,21 +214,21 @@ async function inquirerActualizarAuto(concesionario, auto) {
                     message: 'Ingresa el Precio del Auto: '
                 }
             ]);
-            const autoActualizado = {
-                ...auto,
-                ...nuevoAuto
+        const autoActualizado = {
+            ...auto,
+            ...nuevoAuto
+        }
+        let concesionarios = obtenerConcesionarios();
+        for (let element of concesionarios) {
+            if (element['nombreConcesionario'].toLowerCase().includes(concesionario.nombreConcesionario.toLowerCase())) {
+                let cars = element.autos;
+                const indice = cars.findIndex(book => book.modelo === autoActualizado.modelo);
+                element.autos[indice] = autoActualizado;
+                break;
             }
-            let concesionarios = obtenerConcesionarios();
-            for (let element of concesionarios){
-                if(element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())){
-                    let cars = element.autos;
-                    const indice = cars.findIndex(book => book.modelo === autoActualizado.modelo);
-                    element.autos[indice] = autoActualizado;
-                    break;
-                }
-            }
-            escribirArchivo(concesionarios);
-            console.log("Auto Actualizado")
+        }
+        escribirArchivo(concesionarios);
+        console.log("Auto Actualizado")
     } catch (e) {
         console.error(e);
     }
@@ -246,14 +250,14 @@ async function seleccionarConcesionario() {
             choices: co,
         },
     ]);
-    return concesionario.nombreConcesionario;
+    return concesionario;
 }
 
 
 // Seleccionar Auto
 async function seleccionarAuto(concesionario) {
     let autos = [];
-    buscarConcesionario(concesionario).autos.forEach(element =>{
+    buscarConcesionario(concesionario.nombreConcesionario).autos.forEach(element => {
         autos.push(element.modelo);
     })
     const auto = await inquirer.prompt([
@@ -280,12 +284,22 @@ function guardarConcesionario(concesionario) {
 
 // Crear Auto
 async function guardarAuto() {
-    let concesionario = await seleccionarConcesionario
-();
+    let concesionario = await seleccionarConcesionario();
     let auto = await inquirerAuto();
     let concesionarios = obtenerConcesionarios();
-    for (element of concesionarios){
-        if(element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())){
+    for (element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.nombreConcesionario.toLowerCase())) {
+            element.autos.push(auto);
+            break;
+        }
+    }
+    escribirArchivo(concesionarios);
+}
+
+function guardarAutoAPI(concesionario, auto) {
+    let concesionarios = obtenerConcesionarios();
+    for (element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())) {
             element.autos.push(auto);
             break;
         }
@@ -296,17 +310,17 @@ async function guardarAuto() {
 // READ
 
 // Obtener Concesionarios
-function obtenerConcesionarios(){
-    const data = fs.readFileSync(path);
+function obtenerConcesionarios() {
+    const data = fs.readFileSync(jsonPath);
     const names = JSON.parse(data);
     return names;
 }
 
 // Obtener Autos
-async function obtenerAutos(concesionario){
+async function obtenerAutos(concesionario) {
     let concesionarios = obtenerConcesionarios();
-    for (element of concesionarios){
-        if(element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())){
+    for (element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.nombreConcesionario.toLowerCase())) {
             return element.autos;
         }
     }
@@ -314,57 +328,83 @@ async function obtenerAutos(concesionario){
 
 // UPDATE
 
-// Actualizar Auto
-async function updateAuto(nombreconcesionario){
-    const concesionario = buscarConcesionario(nombreconcesionario);
-    const autos = concesionario.autos;
-    const auto = await seleccionarAuto(nombreconcesionario);
-    for(element of autos){
-        if(element['modelo'].toLowerCase().includes(auto.modelo.toLowerCase())){
-            await inquirerActualizarAuto(nombreconcesionario, auto);
-            break;
-        }
-    }
-}
-
 // Actualizar Concesionario
 async function updateConcesionario(concesionario) {
     const concesionarios = obtenerConcesionarios();
-    for(element of concesionarios){
-        if(element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())){
+    for (element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.nombreConcesionario.toLowerCase())) {
             await inquirerActualizarConcesionario(element);
             break;
         }
     }
 }
 
+// Actualizar Concesionario API
+function updateConcesionarioAPI(concesionario) {
+    let concesionarios = obtenerConcesionarios();
+    for (let element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.nombreConcesionario.toLowerCase())) {
+            var indice = concesionarios.findIndex(conce => conce.nombreConcesionario === concesionario.nombreConcesionario);
+            concesionarios[indice] = concesionario;
+            break;
+        }
+    }
+    escribirArchivo(concesionarios);
+}
+
+// Actualizar Auto
+async function updateAuto(nombreconcesionario) {
+    const concesionario = buscarConcesionario(nombreconcesionario.nombreConcesionario);
+    const autos = concesionario.autos;
+    const auto = await seleccionarAuto(nombreconcesionario);
+    for (element of autos) {
+        if (element['modelo'].toLowerCase().includes(auto.modelo.toLowerCase())) {
+            await inquirerActualizarAuto(nombreconcesionario, auto);
+            break;
+        }
+    }
+}
+
+function updateAutoAPI(concesionario, auto) {
+    let concesionarios = obtenerConcesionarios();
+    for (let element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.nombreConcesionario.toLowerCase())) {
+            let carros = element.autos;
+            const indice = carros.findIndex(car => car.modelo === auto.modelo);
+            element.autos[indice] = auto;
+            break;
+        }
+    }
+    escribirArchivo(concesionarios);
+}
+
 // DELETE
 
 // Borrar Concesionario
-function borrarConcesionarios(concesionario) {
-    try{
+function borrarConcesionarios(nombreConcesionario) {
+    try {
         let concesionarios = obtenerConcesionarios();
-        for (element of concesionarios){
-            if (element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())){
-                concesionarios.splice(concesionarios.indexOf(concesionario),1);
+        for (element of concesionarios) {
+            if (element['nombreConcesionario'].toLowerCase().includes(nombreConcesionario.toLowerCase())) {
+                concesionarios.splice(concesionarios.indexOf(nombreConcesionario), 1);
                 break;
             }
         }
         escribirArchivo(concesionarios);
-    } catch (error){
+    } catch (error) {
         console.error(error);
     }
 }
 
 // Borrar Auto
 async function borrarAutos(nombreConcesionario) {
-    try{
+    try {
         let auto = await seleccionarAuto(nombreConcesionario);
         let concesionarios = obtenerConcesionarios();
-        for (element of concesionarios){
-            if(element['nombreConcesionario'].toLowerCase().includes(nombreConcesionario.toLowerCase())){
-                for (item of element.autos){
-                    if(item.modelo.toLowerCase().includes(auto.modelo.toLowerCase())){
+        for (element of concesionarios) {
+            if (element['nombreConcesionario'].toLowerCase().includes(nombreConcesionario.nombreConcesionario.toLowerCase())) {
+                for (item of element.autos) {
+                    if (item.modelo.toLowerCase().includes(auto.modelo.toLowerCase())) {
                         element.autos.splice(element.autos.indexOf(item), 1);
                         break;
                     }
@@ -372,15 +412,30 @@ async function borrarAutos(nombreConcesionario) {
             }
         }
         escribirArchivo(concesionarios);
-    } catch (error){
+    } catch (error) {
         console.error(error);
     }
     console.log('Auto Borrado');
 }
 
+function borrarAutosAPI(concesionario, modelo) {
+    let concesionarios = obtenerConcesionarios();
+    for (element of concesionarios) {
+        if (element['nombreConcesionario'].toLowerCase().includes(concesionario.toLowerCase())) {
+            for (item of element.autos) {
+                if (item.modelo.toLowerCase().includes(modelo.toLowerCase())) {
+                    element.autos.splice(element.autos.indexOf(item), 1);
+                    break;
+                }
+            }
+        }
+    }
+    escribirArchivo(concesionarios);
+}
+
 // Escritura en el archivo
-function escribirArchivo(data){
-    fs.writeFileSync(path, JSON.stringify(data));
+function escribirArchivo(data) {
+    fs.writeFileSync(jsonPath, JSON.stringify(data));
 }
 
 // Concesionario por el Nombre
@@ -393,12 +448,20 @@ function buscarConcesionario(concesionario) {
     return null;
 }
 
+// Auto por el Nombre
+function buscarAutoConcesionario(concesionario, modelo) {
+    const autos = concesionario.autos.filter(function (auto) {
+        return auto.modelo.toLowerCase().includes(modelo.toLowerCase());
+    })
+    return autos;
+}
+
 
 //FUNCIONES
 
 async function crearConcesionario(path) {
     inquirerConcesionario()
-    .then(concesionario => guardarConcesionario(concesionario));
+        .then(concesionario => guardarConcesionario(concesionario));
 }
 
 function crearAuto(path) {
@@ -411,27 +474,27 @@ function mostrarConcesionario(path) {
 
 function mostrarAuto(path) {
     seleccionarConcesionario()
-    .then(concesionario => console.log(obtenerAutos(concesionario)));
+        .then(concesionario => console.log(obtenerAutos(concesionario)));
 }
 
 function actualizarConcesionario(path) {
     seleccionarConcesionario()
-    .then(concesionario => updateConcesionario(concesionario));
+        .then(concesionario => updateConcesionario(concesionario));
 }
 
 function actualizarAuto(path) {
     seleccionarConcesionario()
-    .then(respuesta => updateAuto(respuesta))
+        .then(respuesta => updateAuto(respuesta))
 }
 
 function borrarConcesionario(path) {
     seleccionarConcesionario()
-    .then(respuesta => borrarConcesionarios(respuesta))
+        .then(respuesta => borrarConcesionarios(respuesta))
 }
 
 function borrarAuto(path) {
     seleccionarConcesionario()
-    .then(respuesta => borrarAutos(respuesta))
+        .then(respuesta => borrarAutos(respuesta))
 }
 
 //MAIN
@@ -445,4 +508,8 @@ async function main() {
         })
 }
 
-main();
+if (require.main === module) {
+    main();
+}
+
+//main();
