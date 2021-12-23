@@ -161,7 +161,7 @@ router.put('/concesionario/:nombreConcesionario', (req, res) => {
     );
 }
 })
-// TO DO LIST
+
 //// Actualizar Autos
 router.put('/autos/:nombreConcesionario&:modelo', (req, res) => {
     try {
@@ -181,8 +181,6 @@ router.put('/autos/:nombreConcesionario&:modelo', (req, res) => {
             };     
         const concesionario = data.buscarConcesionario(nombreConcesionario);
         const auto = data.buscarAutoConcesionario(concesionario, modelo);
-        console.log(auto);
-        console.log(nuevoAuto);
 
         const autoCompleto = {
             ...auto[0],
