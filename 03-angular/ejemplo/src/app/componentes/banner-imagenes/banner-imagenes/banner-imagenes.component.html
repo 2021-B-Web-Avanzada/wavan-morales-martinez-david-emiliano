@@ -1,4 +1,9 @@
-<h2>Hola desde Banner</h2>
+<!-- DIRECTIVA: NG STYLE -> propiedades -->
+<h2 [ngStyle]="{
+'background-color': '#000',
+'color': color,
+'border': 'solid 5px' + color
+}">Hola desde Banner</h2>
 
 <!--- Interpolación {{}} -> TEXTO MUESTRA INTERFAZ --->
 <h3>{{nombre}} - {{apellido}}</h3>
