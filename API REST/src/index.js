@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Configuraciones
 app.set('port', process.env.PORT || 3000);
@@ -22,5 +24,5 @@ app.listen(app.get('port'),()=>{
 
 // Routes
 app.use(require('./routes/index'));
-app.use('/api/concesionarios', require('./routes/concesionarios'));
-app.use('/api/autos', require('./routes/autos'));
+//app.use('/api/concesionarios', require('./routes/concesionarios'));
+//app.use('/api/autos', require('./routes/autos'));
