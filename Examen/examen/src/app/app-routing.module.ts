@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { RutaAsistenciaComponent } from './rutas/ruta-asistencia/ruta-asistencia.component'
+
 import { RutaCuentaComponent } from './rutas/ruta-cuenta/ruta-cuenta.component'
 import { RutaEsportsComponent } from './rutas/ruta-esports/ruta-esports.component'
 import { RutaJuegosComponent } from './rutas/ruta-juegos/ruta-juegos.component'
