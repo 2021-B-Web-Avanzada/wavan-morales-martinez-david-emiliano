@@ -1,0 +1,22 @@
+<div class="cta-contact">
+<div *ngFor="let card of arregloCards; let i = index">
+  <a class="link-contact-card link-margin-card" href="{{card.link}}">
+    <div class="container-card" style="height: 314px">
+      <div class="content-contact">
+        <div class="iconStyle-contact icon-card">
+          <div class="iconSvg-contact">
+          </div>
+        </div>
+        <h2 class="h3-card">{{card.titulo}}</h2>
+        <p>
+          <span>
+            {{card.texto}}
+            <br>
+            {{card.texto2}}
+          </span>
+        </p>
+      </div>
+    </div>
+  </a>
+</div>
+</div>
