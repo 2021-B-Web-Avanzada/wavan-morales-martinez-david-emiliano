@@ -1,0 +1,11 @@
+<div class="container-juegos">
+<div *ngFor="let poster of arregloPosters; let i = index">
+<div class="container-portada">
+    <a class="link-juegos card-link" href="{{poster.link}}">
+      <div class="card-info"
+        [attr.style]=poster.imagen>
+      </div>
+    </a>
+  </div>
+  </div>
+  </div>

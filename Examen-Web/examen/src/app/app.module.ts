@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { RutaDownloadComponent } from './rutas/ruta-download/ruta-download.component';
 import { RutaContactComponent } from './rutas/ruta-contact/ruta-contact.component';
 import { CardsModule } from './componentes/cards/cards.module';
+import { SocialsModule } from './componentes/socials/socials.module';
+import { PosterModule } from './componentes/poster/poster.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { CardsModule } from './componentes/cards/cards.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CardsModule
+    CardsModule,
+    SocialsModule,
+    PosterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
