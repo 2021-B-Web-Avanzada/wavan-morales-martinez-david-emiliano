@@ -1,64 +1,100 @@
-<nav class="Navbar is-auto">
-    <div class="Navbar-container">
-      <div class="Navbar-header">
-        <!-- LOGO 
-        <a [routerLink]="['/login']">Blizzard LOGO</a>
-        <a href="https://www.blizzard.com/" class="Navbar-logo"></a>
-        <div class="Navbar-logo"> <a href="https://www.blizzard.com/">
-            <img src="./assets/Blizzard.png" height="50" width="50"></a></div>
-        -->
-        <!-- ITEMS -->
-        <div class="Navbar-item">
-          <a href="https://shop.blizzard.com/" role="button" aria-haspopup="true" aria-expanded="false"
-            class="Navbar-item Navbar-modalToggle is-noSelect">
-            <div class="Navbar-label">JUEGOS</div>
-            <div class="Navbar-icono Navbar-iconoDropdown">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-chevron-down" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-              </svg>
+<body>
+    <div class="Overlay-content">
+        <div class="Navigation Navigation--hg">
+            <div class="Navigation-wrapper">
+                <div class="Navigation-container">
+                    <ul class="List List--horizontal Navigation-list">
+                        <li class="ListItem ListItem--horizontal Navigation-item">
+                            <a class="is-selected Navigation-link" href="/es-es/download">
+                                <div class="Icon Icon--primary Icon--inline Icon--prefix text-small">
+                                    <svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="-5px" width="24" height="24"
+                                        viewBox="0 0 172 172" style=" fill:#000000;">
+                                        <g fill="none" fill-rule="nonzero" >
+                                            <path d="M0,172v-172h172v172z" fill="none">
+                                                
+                                            </path>
+                                            <g fill="#00aeff">
+                                                <path
+                                                    d="M86,15.0472l-78.83333,70.9528h21.5v64.5h50.16667v-43h14.33333v43h50.16667v-64.5h21.5zM86,34.33561l43,38.7028v5.79492v57.33333h-21.5v-43h-43v43h-21.5v-63.12826z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                Descargas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </a>
-          <a href="https://shop.blizzard.com/" role="button" aria-haspopup="true" aria-expanded="false"
-            class="Navbar-item Navbar-modalToggle is-noSelect">
-            <div class="Navbar-label">TIENDA</div>
-          </a>
-          <a href="https://news.blizzard.com" role="button" aria-haspopup="true" aria-expanded="false"
-            class="Navbar-item Navbar-modalToggle is-noSelect">
-            <div class="Navbar-label">NOTICIAS</div>
-          </a>
-          <a href="https://communitytournaments.blizzardesports.com/" role="button" aria-haspopup="true" aria-expanded="false"
-            class="Navbar-item Navbar-modalToggle is-noSelect">
-            <div class="Navbar-label">ESPORTS</div>
-            <div class="Navbar-icono Navbar-iconoDropdown">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-chevron-down" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-              </svg>
-            </div>
-          </a>
+            <div class="Navigation-scroll Navigation-scrollLeft"><span>‹</span></div>
+            <div class="Navigation-scroll Navigation-scrollRight"><span>›</span></div>
         </div>
-  
-        <!-- PERFIL -->
-        <div class="Navbar-perfil">
-          <a href="https://support.blizzard.com/" role="button" aria-haspopup="true" aria-expanded="false"
-            class="Navbar-item Navbar-modalToggle is-noSelect">
-            <div class="Navbar-label">Asistencia</div>
-          </a>
-          <a [routerLink]="['/cuenta']" role="button" aria-haspopup="true" aria-expanded="false"
-            class="Navbar-item Navbar-modalToggle is-noSelect">
-            <div class="Navbar-label">Mi cuenta</div>
-            <div class="Navbar-icono Navbar-iconoDropdown">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-chevron-down" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-              </svg>
-            </div>
-          </a>
-        </div>
-      </div>
     </div>
-  </nav>
+    <main class="Page-container" id="mainContent">
+        <div class="Page-content es-ES">
+            <div>
+                <div class="align-center">
+                    <div id="downloadConfirmation" role="presentation">
+                        <div class="textArea">
+                            <div class="Icon productLogo">
+                                <div class="Icon-image"
+                                    style="background-image: url(https://images.blz-contentstack.com/v3/assets/blte0bbc3c063f45866/blt0a68aed71251de62/605b5ed135bb4d0cbd9bf7e7/desktop-app.png);">
+                                </div>
+                            </div>
+                            <div class="space-small"></div>
+                            <p class="Heading Heading--articleHeadline">Todos tus juegos en un mismo sitio</p>
+                            <div class="space-adaptive-small"></div>
+                            <h1 class="Heading Heading--heroSubtitle">¡Se está descargando Aplicación de escritorio
+                                Battle.net<sup class="super">®</sup>!</h1>
+                            <p class="paragraph">Si tu descarga no ha comenzado, <a id="downloadAgain"
+                                    href="https://www.battle.net/download/getInstallerForGame?os=win&amp;gameProgram=BATTLENET_APP&amp;version=Live&amp;id=1597465751.1637587279"
+                                    role="button" data-analytics="action-link"
+                                    data-analytics-placement="Download || Confirmation - Try Again">inténtalo de
+                                    nuevo</a>.
+                            </p>
+                        </div>
+                        <div class="space-adaptive-medium"></div>
+                        <section class="Pane Pane--backgroundTop Pane--full Home-gameBackgroundPane">
+                            <div class="Pane-content"></div>
+                        </section>
+                        <div class="Home-additionalLinks clearfix Home-additionalLinks--theme">
+                            <div class="Home-additionalLinkAnchor">
+                                <p class="Home-additionalLink">Más información sobre Aplicación de escritorio Battle.net
+                                    <sup class="super">®</sup>
+                                    :
+                                </p>
+                            </div>
+                            <a class="Home-additionalLinkAnchor"
+                                href="https://www.blizzard.com/apps/battle.net/desktop">
+                                <div class="Home-additionalLink">
+                                    <span class="Home-additionalLinkText">
+                                        <div class="Icon Icon--inline Home-additionalLinkIcon">
+                                            <svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+                                                <use xlink:href="#Icon_external_url">
+                                                </use>
+                                            </svg>
+                                        </div>
+                                        Sitio oficial
+                                    </span>
+                                    <div class="Icon Home-additionalLinkArrow">
+                                        <svg class="Icon-svg" xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"
+                                            focusable="false">
+                                            <use xlink:href="#Icon_chevron_right"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-adaptive-large"></div>
+                <div class="space-adaptive-large"></div>
+            </div>
+        </div>
+
+    
+    </main>
+</body>
