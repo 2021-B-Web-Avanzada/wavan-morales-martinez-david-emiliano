@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  urlJPC: 'https://jsonplaceholder.typicode.com'
 };
+
