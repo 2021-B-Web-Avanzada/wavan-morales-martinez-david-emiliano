@@ -176,6 +176,337 @@ display: none;
 
 // Presentación
 
+.container--2uFrJ {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 450px;
+  background-color: #000;
+}
+
+.carousel--1JLnl {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.fadeIn--YJDqH {
+  -webkit-animation-name: carouselFadeIn--1k7ZM;
+  animation-name: carouselFadeIn--1k7ZM;
+  -webkit-animation-duration: 500ms;
+  animation-duration: 500ms;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+  z-index: 0;
+}
+
+.fadeOut--1jGpm {
+  opacity: 0;
+  -webkit-animation-name: carouselFadeOut--2NWsi;
+  animation-name: carouselFadeOut--2NWsi;
+  -webkit-animation-duration: 300ms;
+  animation-duration: 300ms;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+
+.slide--3Nv-y {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.slide--3Nv-y:not(.active--3SR8k) {
+  pointer-events: none;
+}
+
+.backgroundContainer--39Nrx {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 115vw;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+.background--2mhLh {
+  -webkit-animation-duration: 5500ms;
+  animation-duration: 5500ms;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+
+.background--2mhLh {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-position: center 48px;
+  background-repeat: no-repeat;
+  background-size: calc(480px + (20px * 2)) auto;
+  transform: translateX(0);
+  z-index: -1;
+}
+
+.background--2mhLh {
+  background-size: calc(768px + (20px * 2)) auto;
+}
+
+.background--2mhLh {
+  background-position: center top;
+  background-size: auto;
+}
+
+.gradientContainer--cgCbJ {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 2000px;
+  pointer-events: none;
+}
+
+.edgeGradient--1pb7C {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  width: 26vw;
+  max-width: 380px;
+  pointer-events: none;
+}
+
+.pane--2qE91 {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 24px;
+}
+
+.pane--2qE91 {
+  display: flex;
+  align-items: center;
+}
+
+.pane--2qE91 {
+  bottom: 0;
+  padding: 0 24px;
+}
+
+.pane--2qE91 {
+  max-width: 1650px;
+  width: 100%;
+}
+
+.contentWrapper--22UAC {
+  position: relative;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-top: 56px;
+}
+
+.contentWrapper--22UAC {
+  padding: 56px;
+}
+
+.content--2vjj3 {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.logoLink--3KCRh {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.logoLink--3KCRh {
+  margin-bottom: 24px;
+}
+
+.h1--1PK4G {
+  font-size: 1.75rem;
+  font-family: "Blizzard",Helvetica,Arial,sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.h1--1PK4G {
+  font-size: 4.25rem;
+}
+
+.uppercase--tFXj1 {
+  text-transform: uppercase;
+}
+
+.dropShadow--3YUXx {
+  text-shadow: 4px 7px 17px rgb(0 0 0 / 80%);
+}
+
+.slideLeft--3vgt3 .logo--17cZ8, .slideLeft--3vgt3 .heading--hcKyC, .slideLeft--3vgt3 .button--bHId0 {
+  -webkit-animation-name: slideLeftFadeIn--wPpYV;
+  animation-name: slideLeftFadeIn--wPpYV;
+  -webkit-animation-duration: 500ms;
+  animation-duration: 500ms;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+}
+
+.slideLeft--3vgt3 .heading--hcKyC {
+  -webkit-animation-delay: 700ms;
+  animation-delay: 700ms;
+}
+
+.headline--2iI4P {
+  color: #fff;
+  max-width: 768px;
+  margin-right: auto;
+  text-decoration: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.button--3FAOb {
+  display: inline-block;
+  position: relative;
+  background-color: #006fb2;
+  border: solid 1px #00aeff;
+  font-family: "Open Sans",Helvetica,Arial,sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  padding: 10px 50px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: color 200ms,background-color 200ms,border-color 200ms;
+  line-height: normal;
+  outline-offset: 2px;
+  box-sizing: border-box;
+}
+
+.button--bHId0 {
+  width: 70%;
+  margin-top: 24px;
+}
+
+.button--bHId0 {
+  width: auto;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.button--35Rot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1px;
+  font-size: 16px;
+  height: 60px;
+  width: 20px;
+  border: 1px solid #263945;
+  background-color: rgba(0,0,0,.5);
+  cursor: pointer;
+  color: #00aeff;
+  transition: opacity 200ms,color 200ms;
+}
+
+.button--35Rot {
+  font-size: 24px;
+  height: 80px;
+  width: 40px;
+}
+
+.hidden--2knD2 {
+  opacity: 0;
+}
+
+.prevArrow--ITmFV {
+  position: absolute;
+  left: 0;
+}
+
+.prevArrow--ITmFV {
+  left: 20px;
+}
+
+.iconSvg--7rod7 {
+  fill: currentColor;
+  pointer-events: none;
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.slider--1jdVa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1px;
+  width: 100%;
+  height: 16px;
+  background-color: #0b0d12;
+}
+
+.slider--1jdVa {
+  height: 24px;
+}
+
+.item--9iS1u {
+  position: relative;
+  height: 3px;
+  margin: 0 2.5px;
+  background: rgba(255,255,255,.5);
+  flex-grow: 1;
+  cursor: pointer;
+  transition: transform 500ms;
+}
+
+.item--9iS1u {
+  width: 60px;
+  height: 6px;
+  margin: 0 4px;
+  flex-grow: 0;
+}
+
+.item--9iS1u {
+  width: 100px;
+}
+
+.active--1dtX1 {
+  background: #0086ca;
+  transform: scaleY(1.75);
+}
+
+
+
+
+
+
 .presentation {
     position: relative;
     display: flex;
@@ -1015,7 +1346,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .responsive--1p_ok {
-  min-height: 300px;
+  min-height: 412px;
 }
 
 .h3--HMm2V {
