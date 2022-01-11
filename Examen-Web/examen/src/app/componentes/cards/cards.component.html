@@ -1,0 +1,29 @@
+<div class="cta-contact">
+  <div *ngFor="let card of arregloCards; let i = index">
+    <a class="link-contact-card link-margin-card" href="{{card.link}}">
+      <div class="container-card" style="height: 314px">
+        <div class="content-contact">
+          <div class="iconStyle-contact icon-card">
+            <div class="iconSvg-contact">
+              <!-- ICONO -->
+              <svg focusable="false" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path [attr.d]="card.icono" stroke="currentcolor" stroke-width="6" stroke-linecap="round">
+                </path>
+                <path [attr.d]="card.icono2" stroke="currentcolor" [attr.stroke-width]="card.width" stroke-linecap="round" fill="currentcolor"></path>
+                <path [attr.d]="card.icono3" stroke="currentcolor" stroke-width="6"></path>
+              </svg>
+            </div>
+          </div>
+          <h2 class="h3-card">{{card.titulo}}</h2>
+          <p>
+            <span>
+              {{card.texto}}
+              <br>
+              {{card.texto2}}
+            </span>
+          </p>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

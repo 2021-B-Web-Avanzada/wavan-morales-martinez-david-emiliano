@@ -1,0 +1,45 @@
+ .links-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1px;
+    margin-top: 16px;
+    transition: transform .2s;
+  }
+  
+  .links-social {
+    margin-top: 12px;
+  }
+  
+  .icon-social {
+    margin: 0 12px 12px;
+  }
+  
+  .link-social {
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #fff;
+    color: #00aeff;
+    transition: color 200ms;
+    text-decoration: none;
+  }
+  
+  .icons-modify {
+    display: inline-block;
+    vertical-align: middle;
+    border: 0;
+  }
+  
+  .icons-mod {
+    color: #fff;
+    font-size: 1.5rem;
+  }
+  
+  .icon-svg {
+    fill: currentColor;
+    pointer-events: none;
+    height: 1.5em;
+    width: 1.5em;
+  }

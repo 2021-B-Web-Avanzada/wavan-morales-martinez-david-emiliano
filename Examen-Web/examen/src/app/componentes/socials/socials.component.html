@@ -1,0 +1,16 @@
+<div class="links-social">
+    <div *ngFor="let social of arregloSocials; let i = index">
+        <div class="icon-social">
+            <a class="link-social link-social-hover" href="{{social.link}}">
+                <div class="icons-mod icons-modify">
+                    <div class="icon-svg">
+                        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" [attr.viewBox]=social.view>
+                            <path [attr.d]=social.icono>
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
