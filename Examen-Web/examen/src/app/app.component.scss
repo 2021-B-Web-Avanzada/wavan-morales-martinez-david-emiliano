@@ -1372,3 +1372,16 @@ h1, h2, h3, h4, h5, h6, p {
 .subtitle--2Y9kr {
   color: rgba(255,255,255,.8);
 }
+
+.carousel-indicators [data-bs-target] {
+  width: 100px;
+  height: 6px;
+  margin-bottom: -17px;
+}
+
+$carousel-transition-duration:       500ms;
+$carousel-transition:                transform 2s ease, opacity .5s ease-out;
+$carousel-indicator-active-bg:       #0086ca;
+
+
+

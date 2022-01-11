@@ -8,12 +8,14 @@ import { RutaContactComponent } from './rutas/ruta-contact/ruta-contact.componen
 import { CardsModule } from './componentes/cards/cards.module';
 import { SocialsModule } from './componentes/socials/socials.module';
 import { PosterModule } from './componentes/poster/poster.module';
+import { RutaHomeComponent } from './rutas/ruta-home/ruta-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RutaDownloadComponent,
     RutaContactComponent,
+    RutaHomeComponent,
   ],
   imports: [
     BrowserModule,
