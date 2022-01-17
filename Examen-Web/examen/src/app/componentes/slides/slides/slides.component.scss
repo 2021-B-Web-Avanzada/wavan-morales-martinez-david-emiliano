@@ -1,0 +1,147 @@
+.image-options {
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 40vw;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 180%;
+  }
+  
+  .image-options {
+    height: 412px;
+  }
+
+  .carousel-caption2 {
+    position: absolute;
+    bottom: 1.25rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    color: #fff;
+    text-align: center;
+    left: 0px;
+    top: 5px;
+  }
+
+  .responsive--1p_ok {
+    text-align: center;
+    height: 0px;
+    min-height: 60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    overflow: hidden;
+  }
+  
+  .responsive--1p_ok {
+    min-height: 200px;
+    text-align: left;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .responsive--1p_ok {
+    align-items: center;
+  }
+  
+  .responsive--1p_ok {
+    min-height: 200px;
+    text-align: left;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .responsive--1p_ok {
+    min-height: 250px;
+  }
+  
+  .responsive--1p_ok {
+    min-height: 412px;
+  }
+
+  .contentWrapper--22UAC {
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 16px;
+    padding-top: 56px;
+  }
+  
+  .contentWrapper--22UAC {
+    padding: 56px;
+  }
+
+  .h2-juegos {
+    font-size: 1.5rem;
+    font-family: 'Blizzard', Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #fff;
+  }
+  
+  .h2-juegos {
+    font-size: 2.75rem;
+  }
+
+  .subtitle--2Y9kr {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .h3--HMm2V {
+    font-size: 1.25rem;
+    font-family: 'Blizzard', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #fff;
+  }
+  
+  .h3--HMm2V {
+    font-size: 1.5rem;
+  }
+  
+  .h3--HMm2V {
+    font-size: 1.5rem;
+  }
+  
+  .h3--HMm2V {
+    font-size: 1.5rem;
+  }
+
+  .button-align {
+    margin-top: 16px;
+  }
+
+  .button-options {
+    display: inline-block;
+    position: relative;
+    background-color: #006fb2;
+    border: solid 1px #00aeff;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    padding: 10px 50px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: color 200ms, background-color 200ms, border-color 200ms;
+    line-height: normal;
+    outline-offset: 2px;
+    box-sizing: border-box;
+  }
+
+
+.carousel-item {
+    position: relative;
+    display: none;
+    float: left;
+    width: 100%;
+    margin-right: -100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transition: transform .6s ease-in-out;
+}
+
