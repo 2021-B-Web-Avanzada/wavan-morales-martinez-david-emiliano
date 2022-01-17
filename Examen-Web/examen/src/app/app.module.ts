@@ -9,6 +9,7 @@ import { CardsModule } from './componentes/cards/cards.module';
 import { SocialsModule } from './componentes/socials/socials.module';
 import { PosterModule } from './componentes/poster/poster.module';
 import { RutaHomeComponent } from './rutas/ruta-home/ruta-home.component';
+import { SlidesModule } from './componentes/slides/slides.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RutaHomeComponent } from './rutas/ruta-home/ruta-home.component';
     AppRoutingModule,
     CardsModule,
     SocialsModule,
-    PosterModule
+    PosterModule,
+    SlidesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

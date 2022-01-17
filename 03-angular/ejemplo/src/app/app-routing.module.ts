@@ -6,6 +6,7 @@ import { RutaInicioComponent } from './rutas/ruta-inicio/ruta-inicio.component';
 import { RutaLoginComponent } from './rutas/ruta-login/ruta-login.component';
 import { RutaNotFoundComponent } from './rutas/ruta-not-found/ruta-not-found.component';
 import { RutaPostComponent } from './rutas/ruta-post/ruta-post.component';
+import { RutaUsuarioPerfilComponent } from './rutas/ruta-usuario-perfil/ruta-usuario-perfil.component';
 import { RutaUsuarioComponent } from './rutas/ruta-usuario/ruta-usuario.component';
 import { EsAdministradorGuard } from './servicios/auth/es-administrador.guard';
 import { EstaLogeadoGuard } from './servicios/auth/esta-logeado.guard';
@@ -42,7 +43,11 @@ const routes: Routes = [
       {
         path:'usuario',
         component: RutaUsuarioComponent,
-      } ,
+      },
+      {
+        path:'usuario/:idUsuario',
+        component: RutaUsuarioPerfilComponent,
+      },
       {
         path: 'post',
         component: RutaPostComponent,
