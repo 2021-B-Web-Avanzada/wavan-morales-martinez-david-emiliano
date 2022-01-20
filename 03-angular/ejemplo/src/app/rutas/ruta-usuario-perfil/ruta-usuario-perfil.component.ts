@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+
 import { ActivatedRoute } from '@angular/router';
 import { UserJphService } from 'src/app/servicios/http/user-jph.service';
 import { UserJphInterface } from 'src/app/servicios/interface/user-jph.interface';
@@ -14,6 +18,8 @@ export class RutaUsuarioPerfilComponent implements OnInit {
 
   idUsuario = 0;
   usuarioActual?: UserJphInterface;
+  usuarioActual?:UserJphInterface;
+
   formGroup?: FormGroup;
 
   constructor(
@@ -56,6 +62,18 @@ export class RutaUsuarioPerfilComponent implements OnInit {
       }
       )
 
+    .group(
+      {
+        email: new FormControl(
+          {
+            value: 'ejemplo@ejemplo.com',
+            disabled: true
+          },
+          [])
+      }
+    );
+
+
 
     const parametrosRuta$ = this.activatedRoute.params
     parametrosRuta$
@@ -67,6 +85,7 @@ export class RutaUsuarioPerfilComponent implements OnInit {
         }
       })
   }
+
 
   buscarUsuario(id: number) {
     const buscarUsuarioPorId$ = this.userJPHService.buscarUno(id);
@@ -81,5 +100,20 @@ export class RutaUsuarioPerfilComponent implements OnInit {
           }
         }
       )
+
+  buscarUsuario(id: number){
+    const buscarUsuarioPorId$ = this.userJPHService.buscarUno(id);
+    buscarUsuarioPorId$
+    .subscribe(
+      {
+        next:(data) => {
+          this.usuarioActual = data;
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      }
+    )
+
   }
 }
