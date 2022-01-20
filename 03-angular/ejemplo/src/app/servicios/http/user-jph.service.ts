@@ -33,13 +33,13 @@ export class UserJphService {
       );
   }
 
-  buscarUno(idUsuario: number): Observable<UserJphInterface[]> {
-    const url = environment.urlJPC + '/users' + idUsuario;
+  buscarUno(idUsuario: number): Observable<UserJphInterface> {
+    const url = environment.urlJPC + '/users/' + idUsuario;
     return this.httpClient
       .get(url)
       .pipe(
         map(
-          (resultadoEnData) => resultadoEnData as UserJphInterface[]
+          (resultadoEnData) => resultadoEnData as UserJphInterface
         )
       );
   }

@@ -1,5 +1,6 @@
 import { query } from '@angular/animations';
 import { ThrowStmt } from '@angular/compiler';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserJphService } from 'src/app/servicios/http/user-jph.service';
@@ -26,23 +27,23 @@ export class RutaUsuarioComponent implements OnInit {
     const parametrosConsulta$ = this.activatedRoute
       .queryParams;
 
-    parametrosConsulta$   
-    .subscribe (
+    parametrosConsulta$
+      .subscribe(
         {
-        next:(queryParams) =>{
-          console.log(queryParams);
-          this.buscarUsuario =queryParams['name'];
-          this.buscarUsuarios();
-        },
-        error:() =>{
+          next: (queryParams) => {
+            console.log(queryParams);
+            this.buscarUsuario = queryParams['name'];
+            this.buscarUsuarios();
+          },
+          error: () => {
 
-        },
-        complete: () =>{
+          },
+          complete: () => {
 
+          }
         }
-      }
-    );
-    
+      );
+
     /*
     this.router.navigate(['/app','usuario'], {queryParams:{
       name:'asdasd'
@@ -51,16 +52,16 @@ export class RutaUsuarioComponent implements OnInit {
     */
   }
 
-  actualizarParametrosDeConsulta(){
+  actualizarParametrosDeConsulta() {
     this.router
-    .navigate(
-      ['/app','usuario'], // Armamos la URL/app/usuario
-      {
-        queryParams: {
-          name: this.buscarUsuario //?name=NombreBuscado
+      .navigate(
+        ['/app', 'usuario'], // Armamos la URL/app/usuario
+        {
+          queryParams: {
+            name: this.buscarUsuario //?name=NombreBuscado
+          }
         }
-      }
-    )
+      )
   }
 
   buscarUsuarios() {
@@ -82,7 +83,8 @@ export class RutaUsuarioComponent implements OnInit {
   }
 
   gestionarUsuario(idUsuario: number) {
-
+    const ruta = ['/app', 'usuario', idUsuario];
+    this.router.navigate(ruta);
   }
 
 }
