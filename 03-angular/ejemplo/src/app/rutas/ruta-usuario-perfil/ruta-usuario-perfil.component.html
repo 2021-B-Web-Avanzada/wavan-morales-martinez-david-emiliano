@@ -13,6 +13,19 @@
             <div id="emailHelp" class="form-text">
                 Ingrese un correo.
             </div>
+            <div *ngIf="formGroup.get('email')">
+                <div class="alert alert-warning" role="alert" 
+                *ngIf="formGroup.get('email')?.invalid &&
+                       formGroup.get('email')?.touched &&
+                       formGroup.get('email')?.dirty">
+                    <span *ngIf="formGroup.get('email')?.hasError('required')">
+                        Correo Requerido
+                    </span>
+                    <span *ngIf="formGroup.get('email')?.hasError('minlength')">
+                        Mínimo de caracteres 3
+                    </span>
+                </div>
+            </div>
         </div>
         <!-- Name -->
         <div class="mb-3">
@@ -54,5 +67,9 @@
                 Ingrese el website.
             </div>
         </div>
+        <button class="btn btn-primary"
+                [disabled]="formGroup.invalid">
+            Guardar</button>
+
     </form>
 </div>

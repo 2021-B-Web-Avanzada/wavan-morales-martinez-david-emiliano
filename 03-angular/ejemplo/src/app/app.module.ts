@@ -37,8 +37,8 @@ import { RutaUsuarioPerfilComponent } from './rutas/ruta-usuario-perfil/ruta-usu
     AppRoutingModule,
     BannerImagenesModule,
     HttpClientModule,
-    FormsModule,           // Template Driven Forms
-    ReactiveFormsModule,   
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     //Servicios
