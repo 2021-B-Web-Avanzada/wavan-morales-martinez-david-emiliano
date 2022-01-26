@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RutaLoginComponent } from './rutas/ruta-login/ruta-login.component';
 import { RutaRegisterComponent } from './rutas/ruta-register/ruta-register.component';
+import { RutaHomeComponent } from './rutas/ruta-home/ruta-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RutaLoginComponent,
-    RutaRegisterComponent
+    RutaRegisterComponent,
+    RutaHomeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,20 @@
+* {
+    border:solid 1px red
+}
+
+.card {
+    margin: 0 300px 0 300px;
+}
+
+.card-img, .card-img-top {
+    padding: 10px;
+}
+
+.navbar-nav-reactions {
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    cursor: pointer;
+}

@@ -2,6 +2,12 @@
     <p>{{usuarioActual.name}}</p>
 </div>
 
+<p-knob [(ngModel)]="valorKnob" [min]="0" [max]="50"></p-knob>
+
+<p-splitButton label="Save" icon="pi pi-check" (onClick)="guardar()" [model]="items"></p-splitButton>
+
+<button id="basic" type="button" color="accent" mat-raise-button (click)="guardar()">Botón Básico</button>
+
 <div class="container" *ngIf="formGroup">
     <form [formGroup]="formGroup">
         <!-- Email -->
@@ -14,8 +20,7 @@
                 Ingrese un correo.
             </div>
             <div *ngIf="formGroup.get('email')">
-                <div class="alert alert-warning" role="alert" 
-                *ngIf="formGroup.get('email')?.invalid &&
+                <div class="alert alert-warning" role="alert" *ngIf="formGroup.get('email')?.invalid &&
                        formGroup.get('email')?.touched &&
                        formGroup.get('email')?.dirty">
                     <span *ngIf="formGroup.get('email')?.hasError('required')">
@@ -27,6 +32,17 @@
                 </div>
             </div>
         </div>
+        <!-- Switch Selector -->
+        <div class="mb-3">
+            <label for="email" class="form-label">
+                Es Administrador
+            </label>
+            <p-inputSwitch formControlName="esAdministrador"></p-inputSwitch>
+            <div class="form-text">
+                Seleccione si es Administrador
+            </div>
+        </div>
+
         <!-- Name -->
         <div class="mb-3">
             <label for="name" class="form-label">
@@ -67,8 +83,7 @@
                 Ingrese el website.
             </div>
         </div>
-        <button class="btn btn-primary"
-                [disabled]="formGroup.invalid">
+        <button class="btn btn-primary" [disabled]="formGroup.invalid" (click)="actualizarUsuario()">
             Guardar</button>
 
     </form>
