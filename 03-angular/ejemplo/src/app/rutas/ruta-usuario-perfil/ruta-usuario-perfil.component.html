@@ -68,7 +68,8 @@
             </div>
         </div>
         <button class="btn btn-primary"
-                [disabled]="formGroup.invalid">
+                [disabled]="formGroup.invalid"
+                (click)="actualizarUsuario()">
             Guardar</button>
 
     </form>
