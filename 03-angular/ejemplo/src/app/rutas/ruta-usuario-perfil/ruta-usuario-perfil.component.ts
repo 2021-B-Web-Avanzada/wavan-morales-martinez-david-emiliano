@@ -16,6 +16,18 @@ export class RutaUsuarioPerfilComponent implements OnInit {
   idUsuario = 0;
   usuarioActual?: UserJphInterface;
   formGroup?: FormGroup;
+  valorKnob = 30;
+  items = [
+    {
+      label: 'Create', icon: 'pi pi-refresh', command: () => {
+        console.log('Create');
+      }
+    },
+    {
+      label: 'Delete', icon: 'pi pi-times', routerLink: ['/recyclerbin']
+    }
+
+  ];
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -23,6 +35,10 @@ export class RutaUsuarioPerfilComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly router: Router
   ) { }
+
+  guardar() {
+    console.log('Guardar')
+  }
 
   ngOnInit(): void {
     const parametrosRuta$ = this.activatedRoute.params;
@@ -47,6 +63,7 @@ export class RutaUsuarioPerfilComponent implements OnInit {
       },
         [Validators.required,
         Validators.email]),
+      esAdministrador: new FormControl(true)
     });
 
     const cambio$ = this.formGroup.valueChanges;
@@ -87,7 +104,7 @@ export class RutaUsuarioPerfilComponent implements OnInit {
       }
     }
     return {
-      email:'',
+      email: '',
     }
   }
 
@@ -95,22 +112,22 @@ export class RutaUsuarioPerfilComponent implements OnInit {
     if (this.usuarioActual) {
       const valoresAActualizar = this.prepararObjeto();
       const actualizar$ = this.userJPHService
-      .actualizarPorId(
-        this.usuarioActual.id,
-        valoresAActualizar
-      );
+        .actualizarPorId(
+          this.usuarioActual.id,
+          valoresAActualizar
+        );
 
       actualizar$
-      .subscribe( {
-        next: (datos) => {
-          console.log({datos});
-          const url = ['/app', 'usuario'];
-          this.router.navigate(url);
-        },
-        error: (error) =>{
-          console.error({error})
-        }
-      });
+        .subscribe({
+          next: (datos) => {
+            console.log({ datos });
+            const url = ['/app', 'usuario'];
+            this.router.navigate(url);
+          },
+          error: (error) => {
+            console.error({ error })
+          }
+        });
     }
   }
 
