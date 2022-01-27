@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RutaHomeComponent } from './rutas/ruta-home/ruta-home.component';
 import { RutaLoginComponent } from './rutas/ruta-login/ruta-login.component';
 import { RutaRegisterComponent } from './rutas/ruta-register/ruta-register.component';
+import { RutaSearchComponent } from './rutas/ruta-search/ruta-search.component';
 
 const routes: Routes = [
 
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: RutaHomeComponent 
+  },
+  {
+    path: 'search',
+    component: RutaSearchComponent 
   }
 
 ];
