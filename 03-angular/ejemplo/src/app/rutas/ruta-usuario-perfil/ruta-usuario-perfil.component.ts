@@ -4,6 +4,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validator, Validators } from "@angular/forms";
 import { UserJphInterface } from 'src/app/servicios/interface/user-jph.interface';
 import { UserJphService } from 'src/app/servicios/http/user-jph.service';
+import { ModalEjemploComponent } from 'src/app/componentes/modales/modal-ejemplo/modal-ejemplo.component';
+import { MatDialog } from '@angular/material/dialog';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
 
 
 @Component({
@@ -33,7 +36,8 @@ export class RutaUsuarioPerfilComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly userJPHService: UserJphService,
     private readonly formBuilder: FormBuilder,
-    private readonly router: Router
+    private readonly router: Router,
+    public dialog: MatDialog
   ) { }
 
   guardar() {
@@ -129,6 +133,33 @@ export class RutaUsuarioPerfilComponent implements OnInit {
           }
         });
     }
+  }
+
+  abrirDialogo () {
+    const referenciaDialogo = this.dialog.open (
+      ModalEjemploComponent,
+      {
+        // Agregamos esta líne para que no pueda cerrar
+        // el dialogo, si no es con el botón del modal
+        disableClose: true,
+        data: {
+          animal: 'panda'
+        },
+      }
+    );
+    const despuesCerrado$ = referenciaDialogo.afterClosed();
+    despuesCerrado$
+      .subscribe(
+        (datos) => {
+          console.log(datos)
+        }
+      );
+  }
+
+  model = {
+    left: true,
+    middle: false,
+    right: false
   }
 
 }
