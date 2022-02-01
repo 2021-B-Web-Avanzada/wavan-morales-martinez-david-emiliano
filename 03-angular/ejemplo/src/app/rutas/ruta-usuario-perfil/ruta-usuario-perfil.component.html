@@ -6,7 +6,19 @@
 
 <p-splitButton label="Save" icon="pi pi-check" (onClick)="guardar()" [model]="items"></p-splitButton>
 
-<button id="basic" type="button" color="accent" mat-raise-button (click)="guardar()">Botón Básico</button>
+<button id="basic" type="button" color="accent" mat-raise-button (click)="abrirDialogo()">Botón Básico</button>
+
+<div class="btn-group btn-group-toggle">
+    <label class="btn-primary" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="model.left"> Left (pre-checked)
+    </label>
+    <label class="btn-primary" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="model.middle"> Middle
+    </label>
+    <label class="btn-primary" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="model.right"> Right
+    </label>
+</div>
 
 <div class="container" *ngIf="formGroup">
     <form [formGroup]="formGroup">
