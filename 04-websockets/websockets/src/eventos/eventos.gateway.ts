@@ -1,4 +1,5 @@
-import { WebSocketGateway } from "@nestjs/websockets";
+import { SubscribeMessage, MessageBody, WebSocketGateway, ConnectedSocket } from "@nestjs/websockets";
+import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway(
     8080,
@@ -9,7 +10,21 @@ import { WebSocketGateway } from "@nestjs/websockets";
         namespace: 'events'
     })
 
-export class EventosGateway {
-
-}
+    export class EventosGateway {
+        @SubscribeMessage('hola')
+        devolverHola(
+            @MessageBody()
+                message,
+            //Socket de Conexión
+            @ConnectedSocket()
+                socket:Socket
+        ) {
+            console.log(socket);
+            console.log(socket.id);
+            return {
+                message,
+                saludo: 'Hola'
+            }
+        }
+    }
 

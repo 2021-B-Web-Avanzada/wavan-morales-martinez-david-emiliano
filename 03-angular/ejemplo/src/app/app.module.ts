@@ -26,6 +26,7 @@ import { ModalEjemploComponent } from './componentes/modales/modal-ejemplo/modal
 import { MatDialogModule} from '@angular/material/dialog';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { SocketIoModule } from 'ngx-socket-io';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,11 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     MatButtonModule,
     MatDialogModule,
     NgbModule,
-    NgbButtonsModule
+    NgbButtonsModule,
+    SocketIoModule.forRoot( {
+      url: 'http://localhost:8080',
+      options: {}
+    })
   ],
   providers: [
     //Servicios
