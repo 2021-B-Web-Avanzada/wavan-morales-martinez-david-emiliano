@@ -5,6 +5,9 @@ import { EventosGateway } from "./eventos.gateway";
     providers: [
         EventosGateway
     ],
+    exports: [
+        EventosGateway
+    ]
 })
 
 export class EventosModule{

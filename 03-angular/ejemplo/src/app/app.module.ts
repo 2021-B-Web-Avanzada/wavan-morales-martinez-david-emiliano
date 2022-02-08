@@ -59,7 +59,7 @@ import { SocketIoModule } from 'ngx-socket-io';
     NgbModule,
     NgbButtonsModule,
     SocketIoModule.forRoot( {
-      url: 'http://localhost:8080',
+      url: 'ws://localhost:8080',
       options: {}
     })
   ],
