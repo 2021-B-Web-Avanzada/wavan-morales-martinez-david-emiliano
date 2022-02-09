@@ -6,6 +6,7 @@ import { RutaInicioComponent } from './rutas/ruta-inicio/ruta-inicio.component';
 import { RutaLoginComponent } from './rutas/ruta-login/ruta-login.component';
 import { RutaNotFoundComponent } from './rutas/ruta-not-found/ruta-not-found.component';
 import { RutaPostComponent } from './rutas/ruta-post/ruta-post.component';
+import { RutaSalaComponent } from './rutas/ruta-sala/ruta-sala.component';
 import { RutaUsuarioPerfilComponent } from './rutas/ruta-usuario-perfil/ruta-usuario-perfil.component';
 import { RutaUsuarioComponent } from './rutas/ruta-usuario/ruta-usuario.component';
 import { EsAdministradorGuard } from './servicios/auth/es-administrador.guard';
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: RutaLoginComponent,
+  },
+  {
+    path: ':salaId/sala',
+    component: RutaSalaComponent,
   },
   { // Lazy-Route
     path: 'lazy-inventario',
@@ -29,11 +34,11 @@ const routes: Routes = [
   },
   {
     path: 'not-found',
-      component: RutaNotFoundComponent,
+    component: RutaNotFoundComponent,
   },
   {
     path: 'inicio',
-    canActivate: [ EstaLogeadoGuard ],
+    canActivate: [EstaLogeadoGuard],
     component: RutaInicioComponent,
   },
   {
@@ -41,11 +46,11 @@ const routes: Routes = [
     component: RutaAppComponent,
     children: [
       {
-        path:'usuario',
+        path: 'usuario',
         component: RutaUsuarioComponent,
       },
       {
-        path:'usuario/:idUsuario',
+        path: 'usuario/:idUsuario',
         component: RutaUsuarioPerfilComponent,
       },
       {
@@ -70,8 +75,8 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(
     routes,
-    {useHash: true}
-    )],
+    { useHash: true }
+  )],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
