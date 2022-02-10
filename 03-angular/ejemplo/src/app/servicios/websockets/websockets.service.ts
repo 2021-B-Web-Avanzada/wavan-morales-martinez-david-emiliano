@@ -8,46 +8,45 @@ import { Observable } from "rxjs";
 })
 
 export class WebsocketsService {
-    constructor(private socket: Socket){
+    constructor(private socket: Socket) {
 
     }
 
     ejecutarEventoHola() {
-        const resp = this.socket.emit('hola',{
-            nombre:'David'
-          });
-          console.log(resp)
+        const resp = this.socket.emit('hola', {
+            nombre: 'David'
+        });
+        console.log(resp)
     }
 
-    escucharEventoHola(){
+    escucharEventoHola() {
         return this.socket.fromEvent('escucharEventoHola');
     }
 
     ejecutarEventoUnirseSala(salaId: number, nombre: string) {
         // Emitimos un evento
         const resp = this.socket.emit(
-            'unirseSala',{
+            'unirseSala', {
             salaId,
             nombre
-          });
+        });
     }
 
-    escucharEventoUnirseSala(){
+    escucharEventoUnirseSala() {
         return this.socket.fromEvent('escucharEventoUnirseSala');
     }
 
     ejecutarEventoEnviarMensaje(salaId: number, nombre: string, mensaje: string) {
         // Emitimos un evento
-        const resp = this.socket.emit(
-            'unirseSala',{
-            salaId,
+        this.socket.emit(
+          'enviarMensaje', {
             nombre,
+            salaId,
             mensaje
           });
-    }
-
-    ejecutarEventoMensajeSala(){
-        return this.socket.fromEvent('escucharEventoMensajeSala');
-    }
+      }
+      escucharEventoMensajeSala(){
+        return this.socket.fromEvent('escucharEventoMensajeSala')
+      }
 }
 

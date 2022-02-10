@@ -7,6 +7,7 @@ import { RutaLoginComponent } from './rutas/ruta-login/ruta-login.component';
 import { RutaRegisterComponent } from './rutas/ruta-register/ruta-register.component';
 import { RutaHomeComponent } from './rutas/ruta-home/ruta-home.component';
 import { RutaSearchComponent } from './rutas/ruta-search/ruta-search.component';
+import { RutaProfileComponent } from './rutas/ruta-profile/ruta-profile.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RutaSearchComponent } from './rutas/ruta-search/ruta-search.component';
     RutaLoginComponent,
     RutaRegisterComponent,
     RutaHomeComponent,
-    RutaSearchComponent
+    RutaSearchComponent,
+    RutaProfileComponent
   ],
   imports: [
     BrowserModule,
