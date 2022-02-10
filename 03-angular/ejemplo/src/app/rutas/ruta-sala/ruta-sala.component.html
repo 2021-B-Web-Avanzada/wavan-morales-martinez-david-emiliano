@@ -1,0 +1,25 @@
+<h1>Sala {{salaId}} - {{nombre}}</h1>
+
+<label for="mensaje"
+       class="form-label"> Mensaje: </label>
+
+<input type="text"
+       class="form-control"
+       [(ngModel)]="mensaje" id="mensaje" name=" mensaje">
+
+<button class="btn btn-info" (click)="enviarMensaje()">
+  Enviar mensaje
+</button>
+
+<div *ngFor="let mensaje of arregloMensajes">
+  <div
+    [class]="mensaje.posicion === 'izq'
+    ? 'text-left' :'text-right'">
+    <h3>{{mensaje.nombre}}</h3>
+    <p>{{mensaje.mensaje}}</p>
+  </div>
+</div>
+
+<br>
+<br>
+<br>
