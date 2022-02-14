@@ -1,0 +1,55 @@
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-center mt-3 mb-3">
+        <h2>Actualizar Auto</h2>
+        <hr>
+    </div>
+
+    <div class="container justify-content-center">
+        <form class="align-center">
+            <div class="form-group pb-2">
+                <label for="exampleInputAutoModel" style="font-weight: 600;">Modelo del Auto</label>
+                <input type="text" class="form-control" id="exampleInputAutoModel" aria-describedby="modelHelp"
+                    placeholder="Modelo del Auto" readonly>
+            </div>
+            <div class="form-group pb-2">
+                <label for="exampleInputAñoFabricación" style="font-weight: 600;">Año de Fabricación</label>
+                <input type="text" class="form-control" id="exampleInputAñoFabricación" aria-describedby="direccionHelp"
+                    placeholder="Año de Fabricación" readonly>
+            </div>
+            <div>
+                <label for="exampleInputEstadoAuto" style="font-weight: 600;">Estado del Auto</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                        value="true" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                        Nuevo
+                    </label>
+                </div>
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                        value="false">
+                    <label class="form-check-label" for="exampleRadios2">
+                        Usado
+                    </label>
+                </div>
+            </div>
+            <div class="form-group pb-2">
+                <label for="exampleInputAutoColor" style="font-weight: 600;">Color del Auto</label>
+                <input type="text" class="form-control" id="exampleInputAutoColor" aria-describedby="colorHelp"
+                    placeholder="Color del Auto">
+            </div>
+            <div class="form-group pb-2">
+                <label for="exampleInputPrecio" style="font-weight: 600;">Precio del Auto</label>
+                <input type="text" class="form-control" id="exampleInputPrecio" aria-describedby="precioHelp"
+                    placeholder="Precio del Auto">
+            </div>
+            <div class="d-flex justify-content-center">
+                <button [routerLink]="['/autos']" type="submit" class="btn btn-primary"
+                    style="padding-left: 25px; padding-right: 25px; font-weight: 600;">Registrar</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
