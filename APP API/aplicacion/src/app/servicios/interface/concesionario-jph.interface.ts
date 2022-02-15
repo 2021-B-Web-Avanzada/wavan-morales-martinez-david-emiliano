@@ -1,3 +1,5 @@
+import { AutoJphInterface } from "./auto-jph.interface";
+
 export interface ConcesionarioJphInterface {
         nombreConcesionario: string;
         direccion: string;
@@ -5,13 +7,5 @@ export interface ConcesionarioJphInterface {
         abierto: boolean;
         web: string;
         logo: string;
-        autos: 
-            {
-                modelo: string;
-                anio: number;
-                nuevo: boolean;
-                color: string;
-                precio: number;
-            }
-        
+        autos: AutoJphInterface[]
 }

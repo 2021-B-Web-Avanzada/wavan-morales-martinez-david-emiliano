@@ -103,9 +103,9 @@ async function inquirerConcesionario() {
                     message: 'Ingrese su Página Web: '
                 },
                 {
-                    type: 'number',
-                    name: 'precio',
-                    message: 'Ingresa el Precio del Auto: '
+                    type: 'input',
+                    name: 'logo',
+                    message: 'Ingresa el Logo: '
                 }
             ]);
         return respuesta

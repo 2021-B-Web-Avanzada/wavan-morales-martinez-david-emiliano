@@ -78,13 +78,15 @@ router.post('/concesionario', (req, res) =>{
         let telefono = req.body.telefono;
         let abierto = req.body.abierto;
         let web = req.body.web;
-        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined) {
+        let logo = req.body.logo;
+        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined && logo !== undefined) {
             let concesionario = {
                 nombreConcesionario: nombreConcesionario,
                 direccion: direccion,
                 telefono: telefono,
                 abierto: abierto,
                 web: web,
+                logo: logo, 
                 autos: []
             };
             data.guardarConcesionario(concesionario);
@@ -152,12 +154,14 @@ router.put('/concesionario/:nombreConcesionario', (req, res) => {
         let telefono = req.body.telefono;
         let abierto = req.body.abierto;
         let web = req.body.web;
-        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined) {
+        let logo = req.body.logo;
+        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined && logo !== undefined) {
             let nuevoConcesionario = {
                 direccion: direccion,
                 telefono: telefono,
                 abierto: abierto,
-                web: web
+                web: web,
+                logo: logo
             };
         let concesionario = data.buscarConcesionario(nombreConcesionario);
         const concesionarioCompleto = {

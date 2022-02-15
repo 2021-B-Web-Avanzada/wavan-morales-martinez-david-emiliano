@@ -6,6 +6,7 @@ import { RutaAutosComponent } from './rutas/ruta-autos/ruta-autos.component';
 import { RutaConcesionariosCrearComponent } from './rutas/ruta-concesionarios-crear/ruta-concesionarios-crear.component';
 import { RutaConcesionariosEditarComponent } from './rutas/ruta-concesionarios-editar/ruta-concesionarios-editar.component';
 import { RutaConcesionariosComponent } from './rutas/ruta-concesionarios/ruta-concesionarios.component';
+import { RutaNotFoundComponent } from './rutas/ruta-not-found/ruta-not-found.component';
 
 const routes: Routes = [
   {
@@ -34,16 +35,19 @@ const routes: Routes = [
     component: RutaAutosEditarComponent
   },
   {
-    path: 'crear/auto',
+    path: 'crear/auto/:nombreConcesionario',
     component: RutaAutosCrearComponent
-  }
+  },
+  {
+    path: '**',
+    component: RutaNotFoundComponent
+  },
 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(
     routes,
-    { useHash: true }
   )],
   exports: [RouterModule]
 })

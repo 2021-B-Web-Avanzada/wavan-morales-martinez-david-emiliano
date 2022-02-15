@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AutoJphInterface } from '../interface/auto-jph.interface';
+import { ConcesionarioJphInterface } from '../interface/concesionario-jph.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +14,13 @@ export class AutoJphService {
     private readonly httpClient: HttpClient
   ) { }
 
-  buscarTodos(parametrosConsulta?:any): Observable<AutoJphInterface[]> {
-    const url = environment.urlJPC + '/autos';
-    Object
-      .keys(parametrosConsulta)
-      .forEach( k=> {
-        if(!parametrosConsulta[k]){
-          delete parametrosConsulta[k]
-        }
-      })
+  buscarTodos(parametrosConsulta?:any): Observable<ConcesionarioJphInterface> {
+    const url = environment.urlJPC + '/autos/' + parametrosConsulta;
     return this.httpClient
-      .get(url, {params: parametrosConsulta})
+      .get(url)
       .pipe(
         map(
-          (resultadoEnData) => resultadoEnData as AutoJphInterface[]
+          (resultadoEnData) => resultadoEnData as ConcesionarioJphInterface
         )
       );
   }
@@ -40,6 +34,12 @@ export class AutoJphService {
           (resultadoEnData) => resultadoEnData as AutoJphInterface
         )
       );
+  }
+
+  eliminarAuto(nombreConcesionario:string, modelo:string): Observable<any> {
+    const url = environment.urlJPC + '/autos/'+ nombreConcesionario + '&' + modelo;
+    return this.httpClient
+      .delete(url);
   }
 
 }

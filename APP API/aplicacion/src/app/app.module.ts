@@ -11,7 +11,8 @@ import { RutaConcesionariosEditarComponent } from './rutas/ruta-concesionarios-e
 import { RutaAutosComponent } from './rutas/ruta-autos/ruta-autos.component';
 import { RutaAutosCrearComponent } from './rutas/ruta-autos-crear/ruta-autos-crear.component';
 import { RutaAutosEditarComponent } from './rutas/ruta-autos-editar/ruta-autos-editar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RutaNotFoundComponent } from './rutas/ruta-not-found/ruta-not-found.component';
 
 @NgModule({
   declarations: [
@@ -21,14 +22,16 @@ import { FormsModule } from '@angular/forms';
     RutaConcesionariosEditarComponent,
     RutaAutosComponent,
     RutaAutosCrearComponent,
-    RutaAutosEditarComponent
+    RutaAutosEditarComponent,
+    RutaNotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CardConcesionarioModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

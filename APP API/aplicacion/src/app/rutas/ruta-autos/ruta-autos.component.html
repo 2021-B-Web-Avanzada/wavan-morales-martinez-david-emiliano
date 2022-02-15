@@ -23,7 +23,7 @@
                             </path>
                         </svg>
                     </button>
-                    <button [routerLink]="['/crear/auto']" type="button" class="btn btn-outline-secondary"
+                    <button [routerLink]="['/crear/auto', buscarAuto]" type="button" class="btn btn-outline-secondary"
                         style="padding: 5px 7px; margin-left: 15px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                             class="bi bi-plus-square-fill" viewBox="0 0 16 16">
@@ -42,20 +42,20 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div *ngFor="let auto of arreglo">
+                <div *ngFor="let auto of arreglo, let i = index">
                     <div class="card mt-2 mb-2" style="max-width: 1200px;">
                         <div class="row g-0 ">
                             <div class="card-header container-fluid">
                                 <div class="row">
                                     <div class="col-md-8" style="align-self: center">
                                         <!-- Nombre de auto y Link para ver los datos del auto -->
-                                        <a (click)="gestionarAuto(auto.autos.modelo)"
-                                            style="cursor: pointer;">{{auto.autos.modelo}}</a>
+                                        <a (click)="gestionarAuto(auto.modelo)"
+                                            style="cursor: pointer;">{{auto.modelo}}</a>
                                     </div>
                                     <div class="col-md-4 float-right text-end">
                                         <!-- Editar -->
                                         <button type="button" class="btn btn-primary" style="padding: 5px 7px"
-                                            (click)="gestionarAuto(auto.autos.modelo)">
+                                            (click)="gestionarAuto(auto.modelo)">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                                 fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                 <path
@@ -64,7 +64,7 @@
                                             </svg>
                                         </button>
                                         <!-- Eliminar -->
-                                        <button type="button" class="btn btn-danger"
+                                        <button (click)="eliminarAuto(i, buscarAuto, auto.modelo)" type="button" class="btn btn-danger"
                                             style="padding: 5px 7px; margin-left: 15px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                                 fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -95,19 +95,19 @@
                                 <div class="card-body">
                                     <p class="card-text">
                                         <label class="pe-2" style="font-weight: 500;">Año:
-                                        </label>{{auto.autos.anio}}
+                                        </label>{{auto.anio}}
                                     </p>
                                     <p class="card-text">
                                         <label class="pe-2" style="font-weight: 500;">Estado:
-                                        </label>{{auto.autos.nuevo}}
+                                        </label>{{auto.nuevo?"Nuevo":"Usado"}}
                                     </p>
                                     <p class="card-text">
                                         <label class="pe-2" style="font-weight: 500;">Color:</label>
-                                        {{auto.autos.color}}
+                                        {{auto.color}}
                                     </p>
                                     <p class="card-text">
                                         <label class="pe-2" style="font-weight: 500;">Precio:
-                                        </label>{{auto.autos.precio}}
+                                        </label>{{auto.precio}}
                                     </p>
                                 </div>
                             </div>
