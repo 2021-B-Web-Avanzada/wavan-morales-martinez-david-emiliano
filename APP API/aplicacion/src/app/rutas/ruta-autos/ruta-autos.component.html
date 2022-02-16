@@ -9,13 +9,13 @@
     <!-- Search Bar -->
     <div class="container mt-3 mb-3">
         <h6>Buscar Auto:</h6>
-        <form class="form-inline">
+
             <div class="row">
                 <div class="col-md-10" style="align-self: center">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
+                    <input [(ngModel)]="modelo" class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
                 </div>
                 <div class="col-md-2" style="align-self: center">
-                    <button type="button" class="btn btn-secondary" style="padding: 5px 7px">
+                    <button (click)="buscarUnAuto()" type="button" class="btn btn-secondary" style="padding: 5px 7px">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                             class="bi bi-search" viewBox="0 0 16 16">
                             <path
@@ -34,7 +34,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+
     </div>
 
 
@@ -50,7 +50,7 @@
                                     <div class="col-md-8" style="align-self: center">
                                         <!-- Nombre de auto y Link para ver los datos del auto -->
                                         <a (click)="gestionarAuto(auto.modelo)"
-                                            style="cursor: pointer;">{{auto.modelo}}</a>
+                                            style="cursor: pointer; font-weight: 600;">{{auto.modelo}}</a>
                                     </div>
                                     <div class="col-md-4 float-right text-end">
                                         <!-- Editar -->
@@ -64,8 +64,8 @@
                                             </svg>
                                         </button>
                                         <!-- Eliminar -->
-                                        <button (click)="eliminarAuto(i, buscarAuto, auto.modelo)" type="button" class="btn btn-danger"
-                                            style="padding: 5px 7px; margin-left: 15px;">
+                                        <button (click)="eliminarAuto(i, buscarAuto, auto.modelo)" type="button"
+                                            class="btn btn-danger" style="padding: 5px 7px; margin-left: 15px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                                 fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path
@@ -115,6 +115,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="container justify-content-center">
+        <div class="d-flex justify-content-center mt-3 mb-3">
+            <button type="button" class="btn btn-primary btn-more" [routerLink]="['/concesionarios']">Volver a los Concesionarios</button>
         </div>
     </div>
 

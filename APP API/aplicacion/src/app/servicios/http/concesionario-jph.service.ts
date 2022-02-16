@@ -71,37 +71,4 @@ export class ConcesionarioJphService {
       );
   }
 
-  /*
-  buscarTodos(parametrosConsulta?:any): Observable<ConcesionarioJphInterface[]> {
-    const url = environment.urlJPC + '/concesionario';
-    Object
-      .keys(parametrosConsulta)
-      .forEach( k=> {
-        if(!parametrosConsulta[k]){
-          delete parametrosConsulta[k]
-        }
-      })
-    return this.httpClient
-      .get(url, {params: parametrosConsulta})
-      .pipe(
-        map(
-          (resultadoEnData) => resultadoEnData as ConcesionarioJphInterface[]
-        )
-      );
-  }
-
-
-
-  buscarUno(nombreConcesionario: string): Observable<ConcesionarioJphInterface> {
-    const url = environment.urlJPC + '/concesionario/' + nombreConcesionario;
-    return this.httpClient
-      .get(url)
-      .pipe(
-        map(
-          (resultadoEnData) => resultadoEnData as ConcesionarioJphInterface
-        )
-      );
-  }
-  */
-
 }

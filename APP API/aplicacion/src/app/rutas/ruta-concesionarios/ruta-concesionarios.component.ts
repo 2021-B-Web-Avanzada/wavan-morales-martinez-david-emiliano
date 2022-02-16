@@ -11,7 +11,8 @@ import { ConcesionarioJphService } from 'src/app/servicios/http/concesionario-jp
 export class RutaConcesionariosComponent implements OnInit {
 
   arreglo: ConcesionarioJphInterface[] = [];
-  buscarConcesionario = '';
+  arregloTemp: ConcesionarioJphInterface[] = [];
+  buscarConcesionario = ' ';
 
   constructor(
     private readonly concesionarioJphService: ConcesionarioJphService,
@@ -20,7 +21,7 @@ export class RutaConcesionariosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
     const parametrosRuta$ = this.activatedRoute.params;
 
     parametrosRuta$
@@ -37,15 +38,15 @@ export class RutaConcesionariosComponent implements OnInit {
           }
         }
       );
-      
+
   }
 
-  agregarConcesionario(){
-    const ruta = ['/crear' , 'concesionario' ];
+  agregarConcesionario() {
+    const ruta = ['/crear', 'concesionario'];
     this.router.navigate(ruta);
   }
 
-  mostrarAutos(nombreConcesionario:string){
+  mostrarAutos(nombreConcesionario: string) {
     const ruta = ['autos/', nombreConcesionario];
     this.router.navigate(ruta);
   }
@@ -54,74 +55,59 @@ export class RutaConcesionariosComponent implements OnInit {
     this.concesionarioJphService
       .buscarConcesionarios()
       .subscribe({
-          next: (datos) => { // try then
-            this.arreglo = datos;
-            console.log({datos});
-          },
-          error: (error) => { // catch
-            console.error({error});
-          },
-        }
+        next: (datos) => { // try then
+          this.arreglo = datos;
+          console.log({ datos });
+        },
+        error: (error) => { // catch
+          console.error({ error });
+        },
+      }
       )
   }
 
-  editarConcesionario(nombreConcesionario:string){
+  buscarUnConcesionario() {
+    if (this.buscarConcesionario == "") {
+      this.buscarConcesionarios()
+    }
+    else {
+      this.concesionarioJphService
+        .buscarConcesionario(this.buscarConcesionario)
+        .subscribe({
+          next: (datos) => { // try then
+            this.arreglo = [datos];
+            console.log({ datos });
+          },
+          error: (error) => { // catch
+            console.error({ error });
+          },
+        }
+
+        )
+    }
+  }
+
+  editarConcesionario(nombreConcesionario: string) {
     const ruta = ['editar/concesionario', nombreConcesionario];
     this.router.navigate(ruta);
   }
 
-  eliminarConcesionario(posicion:number, nombreConcesionario:string){
-    var confirmacion=confirm("¿Está seguro de que desea eliminar el Concesionario: "+nombreConcesionario+'?')
-    if (confirmacion==true){
+  eliminarConcesionario(posicion: number, nombreConcesionario: string) {
+    var confirmacion = confirm("¿Está seguro de que desea eliminar el Concesionario: " + nombreConcesionario + '?')
+    if (confirmacion == true) {
       this.arreglo.splice(posicion, 1);
       const eliminar$ = this.concesionarioJphService.eliminarConcesionario(nombreConcesionario);
       eliminar$
         .subscribe({
           next: (datos) => {
-            console.log({datos});
+            console.log({ datos });
 
           },
           error: (error) => {
-            console.error({error});
+            console.error({ error });
           }
         });
     }
   }
 
-  /*
-  actualizarParametrosDeConsulta() {
-    this.router
-      .navigate(
-        ['/concesionarios', this.buscarConcesionario], 
-      )
-  }
-
-  buscarConcesionarios() {
-    this.concesionarioJphService
-      .buscarTodos({
-        nombreConcesionario: this.buscarConcesionario
-      })
-
-      .subscribe({
-        next: (datos) => {
-          this.arreglo = datos;
-          this.buscarConcesionario = "";
-          console.log({ datos });
-        },
-        error: (error) => {
-          console.error({ error });
-        }
-      });
-  }
-
-  autosConcesionario(concesionario: string) {
-    const ruta = ['autos/', concesionario];
-    this.router.navigate(ruta);
-  }
-
-  gestionarConcesionario(concesionario: string) {
-    const ruta = ['editar/concesionario', concesionario];
-    this.router.navigate(ruta);
-  }
- */
 }

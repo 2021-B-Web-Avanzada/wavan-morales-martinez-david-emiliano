@@ -31,7 +31,7 @@ const routes: Routes = [
     component: RutaAutosComponent
   },
   {
-    path:'editar/auto/:modelo',
+    path:'editar/auto/:nombreConcesionario/:modelo',
     component: RutaAutosEditarComponent
   },
   {

@@ -129,7 +129,6 @@ export class RutaConcesionariosCrearComponent implements OnInit {
           console.error({ error })
         }
       });
-
   }
 
   regresar(){
