@@ -102,6 +102,11 @@ async function inquirerConcesionario() {
                     name: 'web',
                     message: 'Ingrese su Página Web: '
                 },
+                {
+                    type: 'input',
+                    name: 'logo',
+                    message: 'Ingresa el Logo: '
+                }
             ]);
         return respuesta
     } catch (e) {
@@ -170,6 +175,11 @@ async function inquirerActualizarConcesionario(concesionario) {
                     type: 'input',
                     name: 'web',
                     message: 'Ingrese su Página Web: '
+                },
+                {
+                    type: 'input',
+                    name: 'logo',
+                    message: 'Ingrese el Logo: '
                 },
             ]);
 

@@ -5,6 +5,11 @@ const path = require('path');
 const jsPath = path.join(__dirname, '..', '..', '..', 'deber-01', 'deber-01.js');
 const data = require(jsPath);
 
+var express = require('express')
+var cors = require('cors')
+var app = express()
+app.use(cors())
+
 // Root
 router.get('/', (req, res) =>{
     res.json(
@@ -20,6 +25,26 @@ router.get('/', (req, res) =>{
 // Concesionarios
 router.get('/concesionario', (req, res) => {
     res.json(data.obtenerConcesionarios());
+})
+
+// Buscar Concesionaro por Nombre
+router.get('/concesionario/:nombreConcesionario', (req, res) => {
+    try {
+        if (req.query.concesionario !== "") {
+            let nombreConcesionario = req.params.nombreConcesionario;
+            let ConcesionarioEncontrado = data.buscarConcesionario(nombreConcesionario);
+            res.json(ConcesionarioEncontrado);
+        } else {
+            res.json(
+                {
+                    "error": "Debes ingrear un nombre"
+                }
+            );
+            res.sendStatus('400')
+        }
+    } catch (e) {
+        res.sendStatus('400')
+    }
 })
 
 // Autos
@@ -53,13 +78,15 @@ router.post('/concesionario', (req, res) =>{
         let telefono = req.body.telefono;
         let abierto = req.body.abierto;
         let web = req.body.web;
-        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined) {
+        let logo = req.body.logo;
+        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined && logo !== undefined) {
             let concesionario = {
                 nombreConcesionario: nombreConcesionario,
                 direccion: direccion,
                 telefono: telefono,
                 abierto: abierto,
                 web: web,
+                logo: logo, 
                 autos: []
             };
             data.guardarConcesionario(concesionario);
@@ -86,15 +113,15 @@ router.post('/autos/:nombreConcesionario', (req, res) => {
     try {
         let nombreConcesionario = req.params.nombreConcesionario;
         let modelo = req.body.modelo;
-        let año = req.body.año;
+        let anio = req.body.anio;
         let nuevo = req.body.nuevo;
         let color = req.body.color;
         let precio = req.body.precio;
 
-        if (modelo !== undefined && año !== undefined && nuevo !== undefined && color !== undefined && precio !== undefined ) {
+        if (modelo !== undefined && anio !== undefined && nuevo !== undefined && color !== undefined && precio !== undefined ) {
             let auto = {
                 modelo: modelo,
-                año: año,
+                anio: anio,
                 nuevo: nuevo,
                 color: color,
                 precio: precio,
@@ -127,12 +154,14 @@ router.put('/concesionario/:nombreConcesionario', (req, res) => {
         let telefono = req.body.telefono;
         let abierto = req.body.abierto;
         let web = req.body.web;
-        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined) {
+        let logo = req.body.logo;
+        if (nombreConcesionario !== undefined && direccion !== undefined && telefono !== undefined && abierto !== undefined && web !== undefined && logo !== undefined) {
             let nuevoConcesionario = {
                 direccion: direccion,
                 telefono: telefono,
                 abierto: abierto,
-                web: web
+                web: web,
+                logo: logo
             };
         let concesionario = data.buscarConcesionario(nombreConcesionario);
         const concesionarioCompleto = {
@@ -167,14 +196,14 @@ router.put('/autos/:nombreConcesionario&:modelo', (req, res) => {
     try {
         let nombreConcesionario = req.params.nombreConcesionario;
         let modelo = req.params.modelo;
-        let año = req.body.año;
+        let anio = req.body.anio;
         let nuevo = req.body.nuevo;
         let color = req.body.color;
         let precio = req.body.precio;
-        if (año !== undefined && nuevo !== undefined && color !== undefined && precio !== undefined) {
+        if (anio !== undefined && nuevo !== undefined && color !== undefined && precio !== undefined) {
             let nuevoAuto = {
                 modelo: modelo,
-                año : año,
+                anio : anio,
                 nuevo : nuevo,
                 color : color,
                 precio : precio
