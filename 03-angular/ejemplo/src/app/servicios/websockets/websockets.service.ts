@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Socket } from "ngx-socket-io";
-import { Observable } from "rxjs";
 
 
 @Injectable({
@@ -9,7 +8,6 @@ import { Observable } from "rxjs";
 
 export class WebsocketsService {
     constructor(private socket: Socket) {
-
     }
 
     ejecutarEventoHola() {
