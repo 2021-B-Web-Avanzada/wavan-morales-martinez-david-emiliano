@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { WebsocketsService } from 'src/app/servicios/websockets/websockets.service';
 
 @Component({
   selector: 'app-ruta-game',
@@ -7,9 +10,474 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RutaGameComponent implements OnInit {
 
-  constructor() { }
+  // Parametros de la URL
+  nombrePlayer = '';
+  salaId = '';
+  mensaje = '';
 
-  ngOnInit(): void {
+  arregloMensajes: {
+    salaId: string;
+    nombre: string;
+    mensaje: string;
+  }[] = [];
+  arregloSuscripciones: Subscription[] = [];
+
+  constructor(
+    public readonly activatedRoute: ActivatedRoute,
+    private readonly websocketsService: WebsocketsService,
+    private readonly router: Router
+  ) { }
+
+  logicaJuego(): void {
+    // Elementos del Tablero
+    const allCells = document.querySelectorAll('.cell:not(.row-top)');
+    const topCells = document.querySelectorAll('.cell.row-top');
+    const resetButton = document.querySelector('.reset');
+    const status = document.querySelector('.state');
+
+    // Columnas
+    const column0 = [allCells[35], allCells[28], allCells[21], allCells[14], allCells[7], allCells[0], topCells[0]];
+    const column1 = [allCells[36], allCells[29], allCells[22], allCells[15], allCells[8], allCells[1], topCells[1]];
+    const column2 = [allCells[37], allCells[30], allCells[23], allCells[16], allCells[9], allCells[2], topCells[2]];
+    const column3 = [allCells[38], allCells[31], allCells[24], allCells[17], allCells[10], allCells[3], topCells[3]];
+    const column4 = [allCells[39], allCells[32], allCells[25], allCells[18], allCells[11], allCells[4], topCells[4]];
+    const column5 = [allCells[40], allCells[33], allCells[26], allCells[19], allCells[12], allCells[5], topCells[5]];
+    const column6 = [allCells[41], allCells[34], allCells[27], allCells[20], allCells[13], allCells[6], topCells[6]];
+    const columns = [column0, column1, column2, column3, column4, column5, column6];
+
+
+    // Filas
+    const topRow = [topCells[0], topCells[1], topCells[2], topCells[3], topCells[4], topCells[5], topCells[6]];
+    const row0 = [allCells[0], allCells[1], allCells[2], allCells[3], allCells[4], allCells[5], allCells[6]];
+    const row1 = [allCells[7], allCells[8], allCells[9], allCells[10], allCells[11], allCells[12], allCells[13]];
+    const row2 = [allCells[14], allCells[15], allCells[16], allCells[17], allCells[18], allCells[19], allCells[20]];
+    const row3 = [allCells[21], allCells[22], allCells[23], allCells[24], allCells[25], allCells[26], allCells[27]];
+    const row4 = [allCells[28], allCells[29], allCells[30], allCells[31], allCells[32], allCells[33], allCells[34]];
+    const row5 = [allCells[35], allCells[36], allCells[37], allCells[38], allCells[39], allCells[40], allCells[41]];
+    const rows = [row0, row1, row2, row3, row4, row5, topRow];
+
+
+    // Variables
+    let gameIsLive = true;   // Permite seguir jugando
+    let yellowIsNext = true;
+
+
+    // Funciones
+
+    // Arreglo de Celda 
+    // Obtenemos la información de la celda y la ingresamos en un arreglo,
+    // ...classList => Nos permite transformar un Objeto a Arreglo
+    const getClassListArray = (cell: { classList: any; }) => {
+      const classList = cell.classList;
+      return [...classList];
+    };
+
+    // Localización de la celda
+    // Obtenemos los valores de los índices definidos, primero búscamos dentro
+    // del arreglo las filas y columnas, obtenemos el índice de la posición y
+    // lo parseamos en un entero
+    const getCellLocation = (cell: { classList: any; }) => {
+      const classList = getClassListArray(cell);
+
+      const rowClass = classList.find(className => className.includes('row'));
+      const colClass = classList.find(className => className.includes('col'));
+      const rowIndex = rowClass[4];
+      const colIndex = colClass[4];
+      const rowNumber = parseInt(rowIndex, 10);
+      const colNumber = parseInt(colIndex, 10);
+ 
+      return [rowNumber, colNumber];
+    };
+
+    // Obtener primera celda disponible por columna
+    // En cada columna se busca por la celda que no este ocupada por una ficha
+    // Itera en la columna (sin la fila superior) buscando la celda sin ficha
+    // si se encuentra, nos retorna la celda, caso contrario retorna null
+    const getFirstOpenCellForColumn = (colIndex: number) => {
+      const column = columns[colIndex];
+      const columnWithoutTop = column.slice(0, 6);
+
+      for (const cell of columnWithoutTop) {
+        const classList = getClassListArray(cell);
+        if (!classList.includes('yellow') && !classList.includes('red')) {
+          return cell;
+        }
+      }
+
+      return null;
+    };
+
+    // Removiendo el color de la ficha en la fila superior
+    const clearColorFromTop = (colIndex: number) => {
+      const topCell = topCells[colIndex];
+      topCell.classList.remove('yellow');
+      topCell.classList.remove('red');
+    };
+
+    const getColorOfCell = (cell: Element) => {
+      const classList = getClassListArray(cell);
+      if (classList.includes('yellow')) return 'yellow';
+      if (classList.includes('red')) return 'red';
+      return null;
+    };
+
+    const checkWinningCells = (cells: string | any[]) => {
+      if (cells.length < 4) return false;
+
+      gameIsLive = false;
+      for (const cell of cells) {
+        cell.classList.add('win');
+      }
+      status!.textContent = `${yellowIsNext ? '¡El Amarillo' : '¡El Rojo'} ha ganado!`
+      return true;
+    };
+
+    const checkStatusOfGame = (cell: Element) => {
+      const color = getColorOfCell(cell);
+      if (!color) return;
+      const [rowIndex, colIndex] = getCellLocation(cell);
+
+      // Check horizontally
+      let winningCells = [cell];
+      let rowToCheck = rowIndex;
+      let colToCheck = colIndex - 1;
+      while (colToCheck >= 0) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          colToCheck--;
+        } else {
+          break;
+        }
+      }
+      colToCheck = colIndex + 1;
+      while (colToCheck <= 6) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          colToCheck++;
+        } else {
+          break;
+        }
+      }
+      let isWinningCombo = checkWinningCells(winningCells);
+      if (isWinningCombo) return;
+
+
+      // Check vertically
+      winningCells = [cell];
+      rowToCheck = rowIndex - 1;
+      colToCheck = colIndex;
+      while (rowToCheck >= 0) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          rowToCheck--;
+        } else {
+          break;
+        }
+      }
+      rowToCheck = rowIndex + 1;
+      while (rowToCheck <= 5) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          rowToCheck++;
+        } else {
+          break;
+        }
+      }
+      isWinningCombo = checkWinningCells(winningCells);
+      if (isWinningCombo) return;
+
+
+      // Check diagonally /
+      winningCells = [cell];
+      rowToCheck = rowIndex + 1;
+      colToCheck = colIndex - 1;
+      while (colToCheck >= 0 && rowToCheck <= 5) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          rowToCheck++;
+          colToCheck--;
+        } else {
+          break;
+        }
+      }
+      rowToCheck = rowIndex - 1;
+      colToCheck = colIndex + 1;
+      while (colToCheck <= 6 && rowToCheck >= 0) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          rowToCheck--;
+          colToCheck++;
+        } else {
+          break;
+        }
+      }
+      isWinningCombo = checkWinningCells(winningCells);
+      if (isWinningCombo) return;
+
+
+      // Check diagonally \
+      winningCells = [cell];
+      rowToCheck = rowIndex - 1;
+      colToCheck = colIndex - 1;
+      while (colToCheck >= 0 && rowToCheck >= 0) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          rowToCheck--;
+          colToCheck--;
+        } else {
+          break;
+        }
+      }
+      rowToCheck = rowIndex + 1;
+      colToCheck = colIndex + 1;
+      while (colToCheck <= 6 && rowToCheck <= 5) {
+        const cellToCheck = rows[rowToCheck][colToCheck];
+        if (getColorOfCell(cellToCheck) === color) {
+          winningCells.push(cellToCheck);
+          rowToCheck++;
+          colToCheck++;
+        } else {
+          break;
+        }
+      }
+      isWinningCombo = checkWinningCells(winningCells);
+      if (isWinningCombo) return;
+
+      // Check to see if we have a tie
+      const rowsWithoutTop = rows.slice(0, 6);
+      for (const row of rowsWithoutTop) {
+        for (const cell of row) {
+          const classList = getClassListArray(cell);
+          if (!classList.includes('yellow') && !classList.includes('red')) {
+            return;
+          }
+        }
+      }
+
+      gameIsLive = false;
+      status!.textContent = "¡Juego Empatado!";
+    };
+
+
+
+    // Manejadores de Eventos
+    
+    // Obtener la posición de la celda sobre la que se situa el cursor
+    // y situaremos la ficha en la fila superior dependiendo del 
+    // turno del jugador (rojo o amarillo)
+    const handleCellMouseOver = (e: { target: any; }) => {
+      if (!gameIsLive) return;
+      const cell = e.target;
+      const [rowIndex, colIndex] = getCellLocation(cell);
+
+      const topCell = topCells[colIndex];
+      topCell.classList.add(yellowIsNext ? 'yellow' : 'red');
+    };
+
+    // Cuando el cursor se mueva, se eliminará la ficha posicionada en la
+    // fila superior del tablero
+    const handleCellMouseOut = (e: { target: any; }) => {
+      const cell = e.target;
+      const [rowIndex, colIndex] = getCellLocation(cell);
+      clearColorFromTop(colIndex);
+    };
+
+    // Cuando se haga click sobre la columna/celda seleccionada, se buscará
+    // la celda sin ficha, si toda la columna esta llena retorna null, 
+    // finalmente se agregará en esta una ficha
+    const handleCellClick = (e: { target: any; }) => {
+      if (!gameIsLive) return;
+      const cell = e.target;
+      const [rowIndex, colIndex] = getCellLocation(cell);
+
+      const openCell = getFirstOpenCellForColumn(colIndex);
+
+      if (!openCell) return;
+
+      openCell.classList.add(yellowIsNext ? 'yellow' : 'red');
+      checkStatusOfGame(openCell);
+
+      yellowIsNext = !yellowIsNext;
+      clearColorFromTop(colIndex);
+      if (gameIsLive) {
+        const topCell = topCells[colIndex];
+        topCell.classList.add(yellowIsNext ? 'yellow' : 'red');
+      }
+    };
+
+    // Event Listeners 
+
+    // Evento para añadir la ficha
+    // Posiciona la ficha en la fila superior de la celda sobre la que esta el mouse
+    // Quita la ficha de la fila superior cuando el mouse se mueve a otra posición
+    // Añade una ficha al tablero cuando se hace click en la celda 
+    for (const row of rows) {
+      for (const cell of row) {
+        cell.addEventListener('mouseover', handleCellMouseOver);
+        cell.addEventListener('mouseout', handleCellMouseOut);
+        cell.addEventListener('click', handleCellClick);
+      }
+    }
+
+    resetButton!.addEventListener('click', () => {
+      for (const row of rows) {
+        for (const cell of row) {
+          cell.classList.remove('red');
+          cell.classList.remove('yellow');
+          cell.classList.remove('win');
+        }
+      }
+      gameIsLive = true;
+      yellowIsNext = true;
+      status!.textContent = 'Estado del Juego';
+    });
   }
 
+  ngOnInit(): void {
+    const parametrosRuta$ = this.activatedRoute.params;
+
+    parametrosRuta$
+      .subscribe(
+        {
+          next: (parametrosRuta) => {
+            console.log(parametrosRuta);
+            this.salaId = parametrosRuta['salaId']
+            this.nombrePlayer = parametrosRuta['nombre']
+          },
+          error: () => {
+          },
+          complete: () => {
+          }
+        }
+      );
+
+    this.websocketsService.escucharEventoConexion()
+      .subscribe(
+        {
+          next: (data) => {
+            console.log(data);
+          },
+          error: (error) => {
+            console.log({ error })
+          }
+        }
+      )
+
+      this.logicaJuego()
+  }
+
+  // Conexiones
+  eventoConexion(salaId: string, nombre: string) {
+    this.websocketsService.ejecutarEventoConexion(nombre)
+  }
+
+  abandonarConexion() {
+    const ruta = ['start'];
+    this.router.navigate(ruta);
+    //Enviar mensaje de desconexión al otro usuario
+  }
+
+
+
+
+  // Enviar tablero actual, arreglo de celdas pintadas
+  enviarMensaje() {
+    this.arregloMensajes.push({
+      salaId: this.salaId,
+      nombre: this.nombrePlayer,
+      mensaje: this.mensaje,
+    })
+    this.websocketsService.ejecutarEventoEnviarMensaje(
+      this.salaId, this.nombrePlayer, this.mensaje
+    );
+    this.mensaje = '';
+  }
+
+  logicaSalas(salaId: string, nombre: string) {
+    this.desSuscribirse();
+    const respEscucharEventoMensajeSala = this.websocketsService
+      .escucharEventoEnviarMensaje()
+      .subscribe({
+        next: (data: any) => {
+          console.log("Enviaron Mensaje", data);
+          this.arregloMensajes.push({
+            mensaje: data.mensaje,
+            salaId: data.salaId,
+            nombre: data.nombre,
+          })
+        },
+        error: (error) => {
+          console.error({ error });
+        }
+      }
+      );
+    const respEscucharEventoUnirseSala = this.websocketsService
+      .escucharEventoEnviarMensaje()
+      .subscribe({
+        next: (data) => {
+          console.log("Alguien entro", data);
+        },
+        error: (error) => {
+          console.error({ error });
+        }
+      })
+    this.arregloSuscripciones.push(respEscucharEventoUnirseSala);
+    this.arregloSuscripciones.push(respEscucharEventoMensajeSala);
+    this.websocketsService.ejecutarEventoUnirseJuego(this.salaId, this.nombrePlayer)
+  }
+
+  desSuscribirse() {
+    this.arregloSuscripciones.forEach(
+      (suscription) => {
+        suscription.unsubscribe();
+      }
+    );
+    this.arregloSuscripciones = [];
+  }
+
+
+
+
+
+  // reiniciarConexion(): void {
+  //   const parametrosRuta$ = this.activatedRoute.params;
+
+  //   parametrosRuta$
+  //     .subscribe(
+  //       {
+  //         next: (parametrosRuta) => {
+  //           console.log(parametrosRuta);
+  //           this.salaId = parametrosRuta['salaId']
+  //           this.nombrePlayer = parametrosRuta['nombre']
+  //         },
+  //         error: () => {
+  //         },
+  //         complete: () => {
+  //         }
+  //       }
+  //     );
+
+  //   this.websocketsService.escucharEventoConexion()
+  //     .subscribe(
+  //       {
+  //         next: (data) => {
+  //           console.log(data);
+  //         },
+  //         error: (error) => {
+  //           console.log({ error })
+  //         }
+  //       }
+  //     )
+  // }
+
 }
+
+
+

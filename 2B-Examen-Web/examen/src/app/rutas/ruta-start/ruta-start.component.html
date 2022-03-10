@@ -1,9 +1,9 @@
-<div class="container-fluid" style="background-color: #23836F;">
+<div class="container-fluid">
 
     <!--TITLE-->
     <div class="container">
         <div class="d-flex justify-content-center">
-            <div class="card text-white bg-dark" style="margin-top: 11%; margin-bottom: 4%;">
+            <div class="card text-white bg-dark" style="margin-top: 10%; margin-bottom: 4%;">
                 <div class="card-body">
                     <h1 class="card-title"
                         style="font-weight: 800; font-size:3cm; color: #FFD71F; text-shadow: 4px 4px #F53227">CONNECT 4
@@ -14,24 +14,59 @@
     </div>
 
     <!--LOGIN-->
-    <div class="container" style="margin-bottom: 20%;">
+    <div class="container">
         <form class="form-inline">
             <div class="row">
-                <div class="col-md-3" style="align-self: center">
-                </div>
-                <div class="col-md-5" style="align-self: center">
-                    <input class="form-control" type="text" name="concesionario" aria-describedby="buscarConcesionario" placeholder="Nickname">
-                </div>
-                <div class="col-md-2" style="align-self: center">
-                    <button (click)="eventoConexion()" type="button" class="btn btn-secondary" style="padding: 5px 7px">
-                        Jugar
+                <div class="col-md-4"></div>
+                <!-- Crear Juego -->
+                <div class="col-md-4" style="align-content: center;">
+                    <button (click)="crearJuego()" type="button" class="btn btn-secondary text-button"
+                        style="padding-left: 120px; padding-right: 120px;">
+                        Crear Juego
                     </button>
+                    <div class="input-group mb-3 mt-3" *ngIf="mostrarIdSala">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Id de Sala</span>
+                        </div>
+                            <input [(ngModel)]="salaId" [ngModelOptions]="{standalone: true}"  type="text" class="form-control"
+                                aria-label="Username" aria-describedby="basic-addon1" readonly>
+                    </div>
                 </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row mt-3 mb-3">
+                <div class="col-md-4"></div>
+                <!-- Unirse Juego -->
+                <div class="col-md-4" style="align-content: center;">
+                    <button (click)="unirseJuego()" type="button" class="btn btn-secondary text-button">
+                        Unirse a una Sala
+                    </button>
+                    <div class="row mt-3 mb-3" *ngIf="ingresarIdSala">
+                        <div style="color: white">
+                            Ingresa el Id de la sala:
+                        </div>
+                        <div class="input-group mb-3 mt-3">
+                            <input type="text" class="form-control" [(ngModel)]="salaId" [ngModelOptions]="{standalone: true}" placeholder="Id de la sala" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-md-10" style="align-self: center">
+                            <input class="form-control" type="text" name="jugador" [(ngModel)]="nombre" [ngModelOptions]="{standalone: true}"
+                                aria-describedby="jugador" placeholder="Nickname">
+                        </div>
+                        <div class="col-md-2" style="align-self: center">
+                            <button (click)="iniciarJuego()" type="button" class="btn btn-secondary"
+                                style="padding: 5px 5px">
+                                Jugar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
             </div>
         </form>
     </div>
 
-    <div class="container" style="height:auto">
+    <div class="footer mt-5 mb-5">
         <div class="d-flex justify-content-center" style="color:white">
             David E. Morales M. | Aplicaciones Web Avanzadas 2022
         </div>
