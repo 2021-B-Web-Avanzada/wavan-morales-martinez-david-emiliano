@@ -20,7 +20,6 @@ export class RutaStartComponent implements OnInit {
   salaId = '';
 
   constructor(
-    private readonly websocketsService: WebsocketsService,
     private readonly router: Router,
   ) { }
 
@@ -35,7 +34,6 @@ export class RutaStartComponent implements OnInit {
 
   unirseJuego() {
     this.ingresarIdSala = !this.ingresarIdSala;
-    console.log()
   }
 
   generarCodigoSala() {
@@ -46,7 +44,7 @@ export class RutaStartComponent implements OnInit {
   guid = () => (this.generarCodigoSala() + this.generarCodigoSala() + "-" + this.generarCodigoSala()).toLowerCase();
 
   iniciarJuego() {
-    this.websocketsService.ejecutarEventoConexion(this.nombre)
+    // this.websocketsService.ejecutarEventoConexion(this.nombre)
     const ruta = ['game', this.salaId, this.nombre];
     this.router.navigate(ruta);
   }

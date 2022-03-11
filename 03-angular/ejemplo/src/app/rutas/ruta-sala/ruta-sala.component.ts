@@ -29,19 +29,6 @@ export class RutaSalaComponent implements OnInit, OnDestroy {
     console.log('Constructor')
   }
 
-  enviarMensaje(){
-    this.arregloMensajes.push({
-      mensaje:this.mensaje,
-      salaId: +this.salaId,
-      nombre: this.nombre,
-      posicion: 'der'
-    })
-    this.websocketsService.ejecutarEventoEnviarMensaje(
-      +this.salaId, this.nombre, this.mensaje
-    );
-    this.mensaje = '';
-  }
-
   ngOnInit(): void {
     this.activatedRoute
       .params
@@ -99,7 +86,18 @@ export class RutaSalaComponent implements OnInit, OnDestroy {
     this.arregloSuscripciones = [];
   }
 
-
+  enviarMensaje(){
+    this.arregloMensajes.push({
+      mensaje:this.mensaje,
+      salaId: +this.salaId,
+      nombre: this.nombre,
+      posicion: 'der'
+    })
+    this.websocketsService.ejecutarEventoEnviarMensaje(
+      +this.salaId, this.nombre, this.mensaje
+    );
+    this.mensaje = '';
+  }
 
   ngOnDestroy(): void {
     console.log('destroy');

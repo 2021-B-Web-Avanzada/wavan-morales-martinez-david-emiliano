@@ -13,19 +13,25 @@ export class RutaGameComponent implements OnInit {
   // Parametros de la URL
   nombrePlayer = '';
   salaId = '';
-  mensaje = '';
+  estado = 'Juego Iniciado'
+  mensaje = 'El oponente abandonó de sala';
 
+  arregloSuscripciones: Subscription[] = [];
   arregloMensajes: {
     salaId: string;
     nombre: string;
     mensaje: string;
   }[] = [];
-  arregloSuscripciones: Subscription[] = [];
+
+  celda = []
+
+  // Abandonar Sala
+  abandonarSala = false;
 
   constructor(
     public readonly activatedRoute: ActivatedRoute,
     private readonly websocketsService: WebsocketsService,
-    private readonly router: Router
+    private readonly router: Router,
   ) { }
 
   logicaJuego(): void {
@@ -59,8 +65,7 @@ export class RutaGameComponent implements OnInit {
 
     // Variables
     let gameIsLive = true;   // Permite seguir jugando
-    let yellowIsNext = true;
-
+    let yellowIsNext = true; // Define el turno del juego
 
     // Funciones
 
@@ -85,7 +90,7 @@ export class RutaGameComponent implements OnInit {
       const colIndex = colClass[4];
       const rowNumber = parseInt(rowIndex, 10);
       const colNumber = parseInt(colIndex, 10);
- 
+
       return [rowNumber, colNumber];
     };
 
@@ -114,6 +119,8 @@ export class RutaGameComponent implements OnInit {
       topCell.classList.remove('red');
     };
 
+    // Obteniendo el color de la celda
+    // Revisamos la posición de la celda y verificamos el color
     const getColorOfCell = (cell: Element) => {
       const classList = getClassListArray(cell);
       if (classList.includes('yellow')) return 'yellow';
@@ -121,6 +128,10 @@ export class RutaGameComponent implements OnInit {
       return null;
     };
 
+    // Revisamos las celdas ganadoras
+    // Si el arreglo de celdas ganadoras es mayor o igual a 4,
+    // desactivamos el juego, agregamos la propiedad ganadora
+    // a las celdas para que se coloreen y modificamos el estado del juego
     const checkWinningCells = (cells: string | any[]) => {
       if (cells.length < 4) return false;
 
@@ -132,12 +143,22 @@ export class RutaGameComponent implements OnInit {
       return true;
     };
 
+    // Chequeamos el estado del juego
+    // Obtendremos el color y posición de la celda que seleccionamos
     const checkStatusOfGame = (cell: Element) => {
       const color = getColorOfCell(cell);
       if (!color) return;
       const [rowIndex, colIndex] = getCellLocation(cell);
 
-      // Check horizontally
+      // Verificación Horizontal
+      // La última celda que seleccionemos será parte de la combinación ganadora
+      // Tomamos la fila y columna de la celda seleccionada
+      // Mientras el valor de la columna sea positivo, tomamos las celdas de la
+      // fila en la que se encuentra la celda seleccionada para revisarlas
+      // Si el color de la celda a revisar es igual al de la última celda seleccionada
+      // agregamos esa celda a nuestro arreglo de celdas ganadoras
+      // Revisamos primero hacia la izquierda y luego hacia la derecha
+      // Si nos encontramos con una celda de otro color, salimos (break) de la función
       let winningCells = [cell];
       let rowToCheck = rowIndex;
       let colToCheck = colIndex - 1;
@@ -164,7 +185,8 @@ export class RutaGameComponent implements OnInit {
       if (isWinningCombo) return;
 
 
-      // Check vertically
+      // Verificación Vertical 
+      // Similar a la verificación horizontal
       winningCells = [cell];
       rowToCheck = rowIndex - 1;
       colToCheck = colIndex;
@@ -191,7 +213,10 @@ export class RutaGameComponent implements OnInit {
       if (isWinningCombo) return;
 
 
-      // Check diagonally /
+      // Verificación diagonal => //
+      // Emplearemos las verificaciones creadas anteriormente, solo que esta vez
+      // revisaremos las celdas que estan en la diagonal izquierda inferior de la
+      // celda seleccionada y luego las que están en la diagonal superior derecha
       winningCells = [cell];
       rowToCheck = rowIndex + 1;
       colToCheck = colIndex - 1;
@@ -221,7 +246,10 @@ export class RutaGameComponent implements OnInit {
       if (isWinningCombo) return;
 
 
-      // Check diagonally \
+      // Verificamos diagonal => \
+      // Similar a la verificación diagonal anterior, revisamos las celdas
+      // en la diagonal superior izquierda y luego las de la diagonal inferior
+      // derecha
       winningCells = [cell];
       rowToCheck = rowIndex - 1;
       colToCheck = colIndex - 1;
@@ -250,7 +278,10 @@ export class RutaGameComponent implements OnInit {
       isWinningCombo = checkWinningCells(winningCells);
       if (isWinningCombo) return;
 
-      // Check to see if we have a tie
+      // Verificación de Empate
+      // Si cada una de las celdas esta ocupada por una ficha roja o amarilla
+      // se declara un empate, para esto tomamos las filas sin la fila superior
+      // Iteramos en entre todas las filas revisando que no existan celdas vacías
       const rowsWithoutTop = rows.slice(0, 6);
       for (const row of rowsWithoutTop) {
         for (const cell of row) {
@@ -268,7 +299,7 @@ export class RutaGameComponent implements OnInit {
 
 
     // Manejadores de Eventos
-    
+
     // Obtener la posición de la celda sobre la que se situa el cursor
     // y situaremos la ficha en la fila superior dependiendo del 
     // turno del jugador (rojo o amarillo)
@@ -290,8 +321,9 @@ export class RutaGameComponent implements OnInit {
     };
 
     // Cuando se haga click sobre la columna/celda seleccionada, se buscará
-    // la celda sin ficha, si toda la columna esta llena retorna null, 
-    // finalmente se agregará en esta una ficha
+    // la celda sin ficha, si toda la columna esta llena retorna null,
+    // verificamos el estado del juego y finalmente se agregará en esta una 
+    // ficha del color correspondiente y cambiará el color de la ficha al siguiente en turno
     const handleCellClick = (e: { target: any; }) => {
       if (!gameIsLive) return;
       const cell = e.target;
@@ -300,7 +332,7 @@ export class RutaGameComponent implements OnInit {
       const openCell = getFirstOpenCellForColumn(colIndex);
 
       if (!openCell) return;
-
+      
       openCell.classList.add(yellowIsNext ? 'yellow' : 'red');
       checkStatusOfGame(openCell);
 
@@ -326,6 +358,10 @@ export class RutaGameComponent implements OnInit {
       }
     }
 
+    // Botón para resetear el juego
+    // Cuando se haga click removeremos los colores y celdas ganadoras
+    // de cada celda en el arreglo de filas, activamos el juego, definimos
+    // el turno del primer jugador y cambiamos el estado del juego
     resetButton!.addEventListener('click', () => {
       for (const row of rows) {
         for (const cell of row) {
@@ -336,72 +372,29 @@ export class RutaGameComponent implements OnInit {
       }
       gameIsLive = true;
       yellowIsNext = true;
-      status!.textContent = 'Estado del Juego';
+      status!.textContent = 'Juego Iniciado';
     });
   }
 
   ngOnInit(): void {
-    const parametrosRuta$ = this.activatedRoute.params;
-
-    parametrosRuta$
-      .subscribe(
-        {
-          next: (parametrosRuta) => {
-            console.log(parametrosRuta);
-            this.salaId = parametrosRuta['salaId']
-            this.nombrePlayer = parametrosRuta['nombre']
-          },
-          error: () => {
-          },
-          complete: () => {
-          }
+    this.activatedRoute
+      .params
+      .subscribe({
+        next: (parametrosRuta) => {
+          const salaId = parametrosRuta['salaId'];
+          const nombre = parametrosRuta['nombre'];
+          this.salaId = salaId;
+          this.nombrePlayer = nombre;
+          this.logicaSalas(this.salaId, this.nombrePlayer);
         }
-      );
+      })
 
-    this.websocketsService.escucharEventoConexion()
-      .subscribe(
-        {
-          next: (data) => {
-            console.log(data);
-          },
-          error: (error) => {
-            console.log({ error })
-          }
-        }
-      )
-
-      this.logicaJuego()
+    this.logicaJuego()
   }
 
-  // Conexiones
-  eventoConexion(salaId: string, nombre: string) {
-    this.websocketsService.ejecutarEventoConexion(nombre)
-  }
-
-  abandonarConexion() {
-    const ruta = ['start'];
-    this.router.navigate(ruta);
-    //Enviar mensaje de desconexión al otro usuario
-  }
-
-
-
-
-  // Enviar tablero actual, arreglo de celdas pintadas
-  enviarMensaje() {
-    this.arregloMensajes.push({
-      salaId: this.salaId,
-      nombre: this.nombrePlayer,
-      mensaje: this.mensaje,
-    })
-    this.websocketsService.ejecutarEventoEnviarMensaje(
-      this.salaId, this.nombrePlayer, this.mensaje
-    );
-    this.mensaje = '';
-  }
-
-  logicaSalas(salaId: string, nombre: string) {
+  logicaSalas(salaId: string, nombrePlayer: string) {
     this.desSuscribirse();
+    // Escucha de Mensajes
     const respEscucharEventoMensajeSala = this.websocketsService
       .escucharEventoEnviarMensaje()
       .subscribe({
@@ -412,17 +405,24 @@ export class RutaGameComponent implements OnInit {
             salaId: data.salaId,
             nombre: data.nombre,
           })
+          if(this.mensaje == 'El oponente abandonó de sala'){
+            this.abandonarSala = true;
+            this.estado = 'Esperando Oponente'
+          }
         },
         error: (error) => {
           console.error({ error });
         }
       }
       );
+    // Ingreso de un usuario
     const respEscucharEventoUnirseSala = this.websocketsService
-      .escucharEventoEnviarMensaje()
+      .escucharEventoUnirseSala()
       .subscribe({
         next: (data) => {
-          console.log("Alguien entro", data);
+          console.log("Oponente Ingreso", data);
+          this.abandonarSala = false;
+          this.estado = 'Juego Iniciado'
         },
         error: (error) => {
           console.error({ error });
@@ -430,7 +430,28 @@ export class RutaGameComponent implements OnInit {
       })
     this.arregloSuscripciones.push(respEscucharEventoUnirseSala);
     this.arregloSuscripciones.push(respEscucharEventoMensajeSala);
-    this.websocketsService.ejecutarEventoUnirseJuego(this.salaId, this.nombrePlayer)
+    this.websocketsService.ejecutarEventoUnirseSala(this.salaId, this.nombrePlayer)
+  }
+
+  enviarMensaje(){
+    this.desSuscribirse();
+    this.arregloMensajes.push({
+      salaId: this.salaId,
+      nombre: this.nombrePlayer,
+      mensaje: this.mensaje,
+    })
+    this.websocketsService.ejecutarEventoEnviarMensaje(this.salaId, this.nombrePlayer, this.mensaje);
+    this.abandonarSala = true;
+    const ruta = ['start'];
+    this.router.navigate(ruta);
+  }
+
+  enviarFichas(){
+    this.desSuscribirse();
+    this.websocketsService.ejecutarEventoEnviarMensaje(this.ficha);
+    this.abandonarSala = true;
+    const ruta = ['start'];
+    this.router.navigate(ruta);
   }
 
   desSuscribirse() {
@@ -441,41 +462,6 @@ export class RutaGameComponent implements OnInit {
     );
     this.arregloSuscripciones = [];
   }
-
-
-
-
-
-  // reiniciarConexion(): void {
-  //   const parametrosRuta$ = this.activatedRoute.params;
-
-  //   parametrosRuta$
-  //     .subscribe(
-  //       {
-  //         next: (parametrosRuta) => {
-  //           console.log(parametrosRuta);
-  //           this.salaId = parametrosRuta['salaId']
-  //           this.nombrePlayer = parametrosRuta['nombre']
-  //         },
-  //         error: () => {
-  //         },
-  //         complete: () => {
-  //         }
-  //       }
-  //     );
-
-  //   this.websocketsService.escucharEventoConexion()
-  //     .subscribe(
-  //       {
-  //         next: (data) => {
-  //           console.log(data);
-  //         },
-  //         error: (error) => {
-  //           console.log({ error })
-  //         }
-  //       }
-  //     )
-  // }
 
 }
 
