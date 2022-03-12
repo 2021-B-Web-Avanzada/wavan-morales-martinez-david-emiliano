@@ -10,7 +10,7 @@ const routes: Routes = [
     component: RutaStartComponent
   },
   {
-    path: 'game',
+    path: 'game/:salaId/:nombre',
     component: RutaGameComponent
   },
   {

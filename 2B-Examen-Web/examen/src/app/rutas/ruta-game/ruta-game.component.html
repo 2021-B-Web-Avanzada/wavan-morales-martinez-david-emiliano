@@ -3,9 +3,10 @@
     <!--TITLE-->
     <div class="container">
         <div class="d-flex justify-content-center">
-            <div class="card text-white bg-dark" style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="card text-white bg-dark" style="margin-top: 10px; margin-bottom: 5px;">
                 <div class="card-body">
-                    <h3 class="card-title" style="font-weight: 400; font-size: x-large; color: white;">Notificaciones
+                    <h3 class="card-title" style="font-weight: 400; font-size: large; color: white;">Bienvenido
+                        {{nombrePlayer}}
                     </h3>
                 </div>
             </div>
@@ -14,70 +15,87 @@
 
     <div class="container">
         <div class="d-flex justify-content-center">
-            <div class="card text-white bg-dark" style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="card text-white bg-dark" style="margin-top: 5px; margin-bottom: 5px;">
                 <div class="card-body">
-                    <h3 class="card-title" style="font-weight: 400; font-size: x-large; color: white;">Cronómetro</h3>
+                    <h3 class="card-title state"
+                        style="font-weight: 400; font-size: large; color: white; padding-bottom: 0rem;">{{estado}}</h3>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="grid mt-3">
-
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
-            <div class="cell"> </div>
+    <div class="container" *ngIf="abandonarSala">
+        <div class="d-flex justify-content-center">
+            <div class="card text-white bg-danger" style="margin-top: 5px; margin-bottom: 5px;">
+                <div class="card-body">
+                    <div *ngFor="let mensaje of arregloMensajes">
+                            <h3 class="card-title" style="font-weight: 400; font-size: large; color: white; padding-bottom: 0rem;">{{mensaje.mensaje}}</h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container" style="height: 73px;">
+    <div class="container ">
+        <div class="d-flex justify-content-center">
+            <div class="game-board">
+                <div class="cell row-top col-0"></div>
+                <div class="cell row-top col-1"></div>
+                <div class="cell row-top col-2"></div>
+                <div class="cell row-top col-3"></div>
+                <div class="cell row-top col-4"></div>
+                <div class="cell row-top col-5"></div>
+                <div class="cell row-top col-6"></div>
+                <div class="cell row-0 col-0 left-border top-border"></div>
+                <div class="cell row-0 col-1 top-border"></div>
+                <div class="cell row-0 col-2 top-border"></div>
+                <div class="cell row-0 col-3 top-border"></div>
+                <div class="cell row-0 col-4 top-border"></div>
+                <div class="cell row-0 col-5 top-border"></div>
+                <div class="cell row-0 col-6 top-border right-border"></div>
+                <div class="cell row-1 col-0 left-border"></div>
+                <div class="cell row-1 col-1"></div>
+                <div class="cell row-1 col-2"></div>
+                <div class="cell row-1 col-3"></div>
+                <div class="cell row-1 col-4"></div>
+                <div class="cell row-1 col-5"></div>
+                <div class="cell row-1 col-6 right-border"></div>
+                <div class="cell row-2 col-0 left-border"></div>
+                <div class="cell row-2 col-1"></div>
+                <div class="cell row-2 col-2"></div>
+                <div class="cell row-2 col-3"></div>
+                <div class="cell row-2 col-4"></div>
+                <div class="cell row-2 col-5"></div>
+                <div class="cell row-2 col-6 right-border"></div>
+                <div class="cell row-3 col-0 left-border"></div>
+                <div class="cell row-3 col-1"></div>
+                <div class="cell row-3 col-2"></div>
+                <div class="cell row-3 col-3"></div>
+                <div class="cell row-3 col-4"></div>
+                <div class="cell row-3 col-5"></div>
+                <div class="cell row-3 col-6 right-border"></div>
+                <div class="cell row-4 col-0 left-border"></div>
+                <div class="cell row-4 col-1"></div>
+                <div class="cell row-4 col-2"></div>
+                <div class="cell row-4 col-3"></div>
+                <div class="cell row-4 col-4"></div>
+                <div class="cell row-4 col-5"></div>
+                <div class="cell row-4 col-6 right-border"></div>
+                <div class="cell row-5 col-0 bottom-border left-border"></div>
+                <div class="cell row-5 col-1 bottom-border"></div>
+                <div class="cell row-5 col-2 bottom-border"></div>
+                <div class="cell row-5 col-3 bottom-border"></div>
+                <div class="cell row-5 col-4 bottom-border"></div>
+                <div class="cell row-5 col-5 bottom-border"></div>
+                <div class="cell row-5 col-6 bottom-border right-border"></div>
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="footer">
+                <button class="abandon" (click)="enviarMensaje()">Salir</button>
+                <!-- <button class="reset">Reiniciar</button> -->
+            </div>
+        </div>
     </div>
-
-
-
 </div>
