@@ -22,65 +22,29 @@ export class WebsocketsService {
 
     // Envío de Mensajes
     ejecutarEventoEnviarMensaje(salaId: string, nombrePlayer: string, mensaje: string) {
-        this.socket.emit('enviarMensaje', {salaId, nombrePlayer, mensaje});
+        this.socket.emit('enviarMensaje', { salaId, nombrePlayer, mensaje });
     }
 
-    escucharEventoEnviarMensaje(){
+    escucharEventoEnviarMensaje() {
         return this.socket.fromEvent('escucharEventoEnviarMensaje')
-      }
+    }
 
-    // ejecutarEventoEnviarMensaje(salaId: string, nombrePlayer: string, mensaje: string) {
-    //     // Emitimos un evento
-    //     this.socket.emit('enviarMensaje', { salaId, nombrePlayer, mensaje });
-    // }
+    // Envío de Ficha
+    ejecutarEventoEnviarFicha(salaId: string, fila: number, columna: number, color: string) {
+        this.socket.emit('enviarFicha', { salaId, fila, columna, color });
+    }
 
-    // escucharEventoMensajeSala() {
-    //     return this.socket.fromEvent('escucharEventoMensajeSala')
-    // }
+    escucharEventoEnviarFicha() {
+        return this.socket.fromEvent('escucharEventoEnviarFicha')
+    }
 
-    // ejecutarEventoUnirseSala(salaId: string, nombrePlayer: string){
-    //     console.log('2')
-    //     const message = this.socket.emit('UnirseSala', {salaId: salaId, nombrePlayer: nombrePlayer})
-    // }
+    // Envío de Notificación
+    ejecutarEventoEnviarNotificacion(salaId: string, nombrePlayer: string, notifiacion: string) {
+        this.socket.emit('enviarNotificacion', { salaId, nombrePlayer, notifiacion });
+    }
 
-    // escucharEventoUnirseSala(){
-    //     console.log('3')
-    //     return this.socket.fromEvent('ejecutarEventoUnirseSala')
-    // }
-
-
-    // ejecutarEventoConexion(nombrePlayer: string) {
-    //     const message = this.socket.emit('Conexion', {
-    //         nombre: nombrePlayer
-    //     });
-    //     console.log(message)
-    // }
-
-    // escucharEventoConexion() {
-    //     return this.socket.fromEvent('escucharEventoConexion');
-    // }
-
-    // ejecutarEventoUnirseJuego(salaId: string, nombre: string) {
-    //     const message = this.socket.emit('UnirseJuego', {
-    //         salaId,
-    //         nombre
-    //     });
-    // }
-
-    // escucharEventoUnirseJuego() {
-    //     return this.socket.fromEvent('escucharEventoUnirseJuego');
-    // }
-
-    // ejecutarEventoEnviarMensaje(juegoId: string, nombre: string, mensaje: string) {
-    //     const resp = this.socket.emit('EmitirMensaje', {
-    //         juegoId,
-    //         nombre,
-    //         mensaje
-    //     });
-    // }
-
-    // escucharEventoEnviarMensaje() {
-    //     return this.socket.fromEvent('escucharEventoEnviarMensaje');
-    // }
+    escucharEventoEnviarNotificacion() {
+        return this.socket.fromEvent('escucharEventoEnviarNotificacion')
+    }
 }
 

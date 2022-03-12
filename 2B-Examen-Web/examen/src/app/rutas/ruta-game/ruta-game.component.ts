@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -13,8 +14,9 @@ export class RutaGameComponent implements OnInit {
   // Parametros de la URL
   nombrePlayer = '';
   salaId = '';
-  estado = 'Juego Iniciado'
+  estado = 'Juego Iniciado';
   mensaje = 'El oponente abandonó de sala';
+  notificacion = "Perdiste";
 
   arregloSuscripciones: Subscription[] = [];
   arregloMensajes: {
@@ -23,7 +25,25 @@ export class RutaGameComponent implements OnInit {
     mensaje: string;
   }[] = [];
 
-  celda = []
+  arregloNotificaciones: {
+    salaId: string;
+    nombre: string;
+    notificacion: string;
+  }[] = [];
+
+
+  fila!: number;
+  columna!: number;
+  color!: string;
+  celda!: Element;
+  filaEnviada!: number;
+  columnaEnviada!: number;
+  colorEnviada!: string;
+
+
+  // Variables
+  gameIsLive = true;   // Permite seguir jugando
+  yellowIsNext = true; // Define el turno del juego
 
   // Abandonar Sala
   abandonarSala = false;
@@ -61,11 +81,6 @@ export class RutaGameComponent implements OnInit {
     const row4 = [allCells[28], allCells[29], allCells[30], allCells[31], allCells[32], allCells[33], allCells[34]];
     const row5 = [allCells[35], allCells[36], allCells[37], allCells[38], allCells[39], allCells[40], allCells[41]];
     const rows = [row0, row1, row2, row3, row4, row5, topRow];
-
-
-    // Variables
-    let gameIsLive = true;   // Permite seguir jugando
-    let yellowIsNext = true; // Define el turno del juego
 
     // Funciones
 
@@ -135,11 +150,12 @@ export class RutaGameComponent implements OnInit {
     const checkWinningCells = (cells: string | any[]) => {
       if (cells.length < 4) return false;
 
-      gameIsLive = false;
+      this.gameIsLive = false;
       for (const cell of cells) {
         cell.classList.add('win');
       }
-      status!.textContent = `${yellowIsNext ? '¡El Amarillo' : '¡El Rojo'} ha ganado!`
+      status!.textContent = `${this.yellowIsNext ? '¡El Amarillo' : '¡El Rojo'} ha ganado!`
+      this.enviarNotificacion()
       return true;
     };
 
@@ -292,24 +308,20 @@ export class RutaGameComponent implements OnInit {
         }
       }
 
-      gameIsLive = false;
+      this.gameIsLive = false;
       status!.textContent = "¡Juego Empatado!";
     };
-
-
-
-    // Manejadores de Eventos
 
     // Obtener la posición de la celda sobre la que se situa el cursor
     // y situaremos la ficha en la fila superior dependiendo del 
     // turno del jugador (rojo o amarillo)
     const handleCellMouseOver = (e: { target: any; }) => {
-      if (!gameIsLive) return;
+      if (!this.gameIsLive) return;
       const cell = e.target;
       const [rowIndex, colIndex] = getCellLocation(cell);
 
       const topCell = topCells[colIndex];
-      topCell.classList.add(yellowIsNext ? 'yellow' : 'red');
+      topCell.classList.add(this.yellowIsNext ? 'yellow' : 'red');
     };
 
     // Cuando el cursor se mueva, se eliminará la ficha posicionada en la
@@ -325,24 +337,26 @@ export class RutaGameComponent implements OnInit {
     // verificamos el estado del juego y finalmente se agregará en esta una 
     // ficha del color correspondiente y cambiará el color de la ficha al siguiente en turno
     const handleCellClick = (e: { target: any; }) => {
-      if (!gameIsLive) return;
+      if (!this.gameIsLive) return;
       const cell = e.target;
       const [rowIndex, colIndex] = getCellLocation(cell);
 
       const openCell = getFirstOpenCellForColumn(colIndex);
 
       if (!openCell) return;
-      
-      openCell.classList.add(yellowIsNext ? 'yellow' : 'red');
+      openCell.classList.add(this.yellowIsNext ? 'yellow' : 'red');
+
+      this.websocketsService.ejecutarEventoEnviarFicha(this.salaId, rowIndex, colIndex, this.yellowIsNext ? 'yellow' : 'red');
       checkStatusOfGame(openCell);
 
-      yellowIsNext = !yellowIsNext;
+      //this.yellowIsNext = !this.yellowIsNext;
       clearColorFromTop(colIndex);
-      if (gameIsLive) {
+      if (this.gameIsLive) {
         const topCell = topCells[colIndex];
-        topCell.classList.add(yellowIsNext ? 'yellow' : 'red');
+        topCell.classList.add(this.yellowIsNext ? 'yellow' : 'red');
       }
     };
+
 
     // Event Listeners 
 
@@ -362,18 +376,18 @@ export class RutaGameComponent implements OnInit {
     // Cuando se haga click removeremos los colores y celdas ganadoras
     // de cada celda en el arreglo de filas, activamos el juego, definimos
     // el turno del primer jugador y cambiamos el estado del juego
-    resetButton!.addEventListener('click', () => {
-      for (const row of rows) {
-        for (const cell of row) {
-          cell.classList.remove('red');
-          cell.classList.remove('yellow');
-          cell.classList.remove('win');
-        }
-      }
-      gameIsLive = true;
-      yellowIsNext = true;
-      status!.textContent = 'Juego Iniciado';
-    });
+    // resetButton!.addEventListener('click', () => {
+    //   for (const row of rows) {
+    //     for (const cell of row) {
+    //       cell.classList.remove('red');
+    //       cell.classList.remove('yellow');
+    //       cell.classList.remove('win');
+    //     }
+    //   }
+    //   this.gameIsLive = true;
+    //   this.yellowIsNext = true;
+    //   status!.textContent = 'Juego Iniciado';
+    // });
   }
 
   ngOnInit(): void {
@@ -388,27 +402,100 @@ export class RutaGameComponent implements OnInit {
           this.logicaSalas(this.salaId, this.nombrePlayer);
         }
       })
-
     this.logicaJuego()
   }
 
   logicaSalas(salaId: string, nombrePlayer: string) {
     this.desSuscribirse();
-    // Escucha de Mensajes
+    // Movimiento de Fichas
+    const respEscucharEventoFicha = this.websocketsService
+      .escucharEventoEnviarFicha()
+      .subscribe({
+        next: (data: any) => {
+          console.log("Enviaron Ficha", data);
+          this.filaEnviada = data.fila;
+          this.columnaEnviada = data.columna;
+          this.colorEnviada = data.color;
+          console.log('FICHA LLEGO ' + this.filaEnviada + ' - ' + this.columnaEnviada + ' - ' + this.colorEnviada)
+          const celda = document.querySelectorAll('.cell.row-' + this.filaEnviada + '.col-' + this.columnaEnviada);
+          console.log(celda[0])
+          if (this.columnaEnviada < 6 && this.columnaEnviada > 0 && this.filaEnviada > 0 && this.filaEnviada < 5) {
+            celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada)
+          } else {
+            if (this.filaEnviada == 0 && this.columnaEnviada == 6) {
+              celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' top-border' + ' right-border')
+            } else {
+              if (this.filaEnviada == 0 && this.columnaEnviada == 0) {
+                celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' top-border' + ' left-border')
+              } else {
+                if (this.columnaEnviada == 0 && this.filaEnviada == 5) {
+                  celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' left-border' + ' bottom-border')
+                } else {
+                  if (this.columnaEnviada == 6 && this.filaEnviada == 5) {
+                    celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' right-border' + ' bottom-border')
+                  } else {
+                    if (this.filaEnviada == 5) {
+                      celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' bottom-border')
+                    } else {
+                      if (this.filaEnviada == 0) {
+                        celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' top-border')
+                      } else {
+                        if (this.columnaEnviada == 0) {
+                          celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' left-border')
+                        } else {
+                          if (this.columnaEnviada == 6) {
+                            celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada + ' right-border')
+                          }
+                          // } else {
+                          // if (this.columnaEnviada < 6 && this.columnaEnviada > 0 && this.filaEnviada > 0 && this.filaEnviada < 5) {
+                          //   celda[0].setAttribute('class', 'cell row-' + this.filaEnviada + ' col-' + this.filaEnviada + ' ' + this.colorEnviada)
+                          // }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        error: (error) => {
+          console.error({ error });
+        }
+      });
+    // Abandono de Oponente
     const respEscucharEventoMensajeSala = this.websocketsService
       .escucharEventoEnviarMensaje()
       .subscribe({
         next: (data: any) => {
-          console.log("Enviaron Mensaje", data);
+          console.log("Oponente Abandonó", data);
           this.arregloMensajes.push({
             mensaje: data.mensaje,
             salaId: data.salaId,
             nombre: data.nombre,
           })
-          if(this.mensaje == 'El oponente abandonó de sala'){
+          if (this.mensaje == 'El oponente abandonó de sala') {
             this.abandonarSala = true;
             this.estado = 'Esperando Oponente'
           }
+        },
+        error: (error) => {
+          console.error({ error });
+        }
+      }
+      );
+    // Escucha de Notificacion
+    const respEscucharEventoNotificacion = this.websocketsService
+      .escucharEventoEnviarNotificacion()
+      .subscribe({
+        next: (data: any) => {
+          this.arregloNotificaciones.push({
+            notificacion: data.notificacion,
+            salaId: data.salaId,
+            nombre: data.nombre,
+          })
+          this.estado = 'Perdiste'
+          this.gameIsLive= false;
         },
         error: (error) => {
           console.error({ error });
@@ -423,17 +510,20 @@ export class RutaGameComponent implements OnInit {
           console.log("Oponente Ingreso", data);
           this.abandonarSala = false;
           this.estado = 'Juego Iniciado'
+          this.yellowIsNext = !this.yellowIsNext;
         },
         error: (error) => {
           console.error({ error });
         }
       })
+    this.arregloSuscripciones.push(respEscucharEventoNotificacion);
     this.arregloSuscripciones.push(respEscucharEventoUnirseSala);
     this.arregloSuscripciones.push(respEscucharEventoMensajeSala);
+    this.arregloSuscripciones.push(respEscucharEventoFicha);
     this.websocketsService.ejecutarEventoUnirseSala(this.salaId, this.nombrePlayer)
   }
 
-  enviarMensaje(){
+  enviarMensaje() {
     this.desSuscribirse();
     this.arregloMensajes.push({
       salaId: this.salaId,
@@ -446,12 +536,14 @@ export class RutaGameComponent implements OnInit {
     this.router.navigate(ruta);
   }
 
-  enviarFichas(){
+  enviarNotificacion() {
     this.desSuscribirse();
-    this.websocketsService.ejecutarEventoEnviarMensaje(this.ficha);
-    this.abandonarSala = true;
-    const ruta = ['start'];
-    this.router.navigate(ruta);
+    this.arregloNotificaciones.push({
+      salaId: this.salaId,
+      nombre: this.nombrePlayer,
+      notificacion: this.notificacion,
+    })
+    this.websocketsService.ejecutarEventoEnviarNotificacion(this.salaId, this.nombrePlayer, this.notificacion);
   }
 
   desSuscribirse() {
